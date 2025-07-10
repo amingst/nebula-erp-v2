@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Authentication.Services", "Authentication\Services\Nebula.Services.Authentication.Services.csproj", "{BB24B0E2-2411-EFE4-80D0-B385F180CFCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Authentication.Shared", "Authentication\Shared\Nebula.Services.Authentication.Shared.csproj", "{BB0AECC8-75CA-18D1-C434-2B3D082B1703}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Combined", "Combined\Nebula.Services.Combined.csproj", "{C9E34EC9-92A3-66D1-5688-D787A189199E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Fragments", "Fragments\Nebula.Services.Fragments.csproj", "{1EB49CE2-3236-9333-2B65-17499562A7BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Base", "Base\Nebula.Services.Base.csproj", "{CA3FF956-D934-9210-4460-4CD778DA37DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB24B0E2-2411-EFE4-80D0-B385F180CFCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB24B0E2-2411-EFE4-80D0-B385F180CFCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB24B0E2-2411-EFE4-80D0-B385F180CFCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB24B0E2-2411-EFE4-80D0-B385F180CFCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB0AECC8-75CA-18D1-C434-2B3D082B1703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB0AECC8-75CA-18D1-C434-2B3D082B1703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB0AECC8-75CA-18D1-C434-2B3D082B1703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB0AECC8-75CA-18D1-C434-2B3D082B1703}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9E34EC9-92A3-66D1-5688-D787A189199E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9E34EC9-92A3-66D1-5688-D787A189199E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9E34EC9-92A3-66D1-5688-D787A189199E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9E34EC9-92A3-66D1-5688-D787A189199E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EB49CE2-3236-9333-2B65-17499562A7BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB49CE2-3236-9333-2B65-17499562A7BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB49CE2-3236-9333-2B65-17499562A7BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB49CE2-3236-9333-2B65-17499562A7BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA3FF956-D934-9210-4460-4CD778DA37DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA3FF956-D934-9210-4460-4CD778DA37DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA3FF956-D934-9210-4460-4CD778DA37DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA3FF956-D934-9210-4460-4CD778DA37DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BB24B0E2-2411-EFE4-80D0-B385F180CFCE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{BB0AECC8-75CA-18D1-C434-2B3D082B1703} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A6B18B3-5686-438F-84ED-0407E0288B16}
+	EndGlobalSection
+EndGlobal

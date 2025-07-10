@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+
+package Nebula.Services.Fragments.Authentication;
+
+service UserInterface {
+	rpc AuthenticateUser(AutheticateUserRequest) returns (AuthenticateUserResponse) {}
+}
+
+message AutheticateUserRequest {}
+
+message AuthenticateUserResponse {}
