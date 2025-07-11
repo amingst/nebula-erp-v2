@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using Nebula.Services.Fragments.Organziations;
+using Nebula.Services.Organizations.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace Nebula.Services.Organizations.Services
     public class OrganizationService : OrganizationInterface.OrganizationInterfaceBase
     {
         private readonly ILogger<OrganizationService> _logger;
+        private readonly IOrganizationRepository _organizations;
 
-        public OrganizationService(ILogger<OrganizationService> logger)
+        public OrganizationService(ILogger<OrganizationService> logger, IOrganizationRepository organizations)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _organizations = organizations ?? throw new ArgumentNullException(nameof(organizations));
         }
 
         public override Task<CreateOrganizationResponse> CreateOrganization(CreateOrganizationRequest request, ServerCallContext context)

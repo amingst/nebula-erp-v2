@@ -1,10 +1,17 @@
-﻿using Grpc.Core;
+﻿using Google.Protobuf;
+using Grpc.Core;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Nebula.Services.Authentication.Services.Data;
+using Nebula.Services.Authentication.Shared;
+using Nebula.Services.Authentication.Shared.Extensions;
 using Nebula.Services.Fragments.Authentication;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,16 +21,41 @@ namespace Nebula.Services.Authentication.Services
     {
         private readonly ILogger<UserService> _logger;
         private readonly IUserRepository _users;
+        private readonly SigningCredentials _creds;
+        private static readonly HashAlgorithm hasher = SHA256.Create();
+        private static readonly RandomNumberGenerator rng = RandomNumberGenerator.Create();
 
         public UserService(ILogger<UserService> logger, IUserRepository users)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _users = users ?? throw new ArgumentNullException(nameof(users));
+            _creds = new SigningCredentials(JwtExtensions.GetPrivateKey(), SecurityAlgorithms.EcdsaSha256);
         }
 
-        public override Task<AuthenticateUserResponse> AuthenticateUser(AutheticateUserRequest request, ServerCallContext context)
+        public override async Task<AuthenticateUserResponse> AuthenticateUser(AutheticateUserRequest request, ServerCallContext context)
         {
-            return base.AuthenticateUser(request, context);
+            if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
+                return new AuthenticateUserResponse() { Error = "Username or Password Undefined"};
+
+            var user = await _users.GetByUserName(request.UserName);
+            if (user == null)
+            {
+                user = await _users.GetByEmail(request.UserName);
+                if (user == null)
+                    return new AuthenticateUserResponse() { Error = "User not found" };
+            }
+
+            bool isCorrect = await IsPasswordCorrect(request.Password, user);
+            if (!isCorrect) {                 
+                _logger.LogWarning("Failed login attempt for user {UserName}", request.UserName);
+                return new AuthenticateUserResponse() { Error = "Invalid password" };
+            }
+
+            return new AuthenticateUserResponse()
+            {
+                Error = "No Error",
+                Token = GenerateToken(user)
+            };
         }
 
         public override async Task<AuthenticateUserResponse> RegisterUser(RegisterUserRequest request, ServerCallContext context)
@@ -51,6 +83,11 @@ namespace Nebula.Services.Authentication.Services
                 }
             };
 
+
+            byte[] salt = RandomNumberGenerator.GetBytes(16);
+            newUser.Server.PasswordSalt = ByteString.CopyFrom(salt);
+            newUser.Server.PasswordHash = ByteString.CopyFrom(ComputeSaltedHash(request.Password, salt));
+
             var created = await _users.Create(newUser);
             if (!created)
             {
@@ -58,11 +95,72 @@ namespace Nebula.Services.Authentication.Services
                 return new AuthenticateUserResponse { Error = "Failed to create user" };
             }
 
+            var token = GenerateToken(newUser);
+
             return new AuthenticateUserResponse()
             {
                 Error = "No Error",
-                Token = "TODO: GENERATE TOKEN"
+                Token = token
             };
+        }
+
+        private string GenerateToken(UserFullRecord user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            var nebulaUser = new NebulaUser
+            {
+                Id = Guid.Parse(user.Public.UserId),
+                UserName = user.Public.UserName,
+                DisplayName = user.Public.DisplayName,
+            };
+
+            nebulaUser.Idents.AddRange(user.Public.Identites.ToList());
+            nebulaUser.Roles.AddRange(user.Private.Roles.ToList());
+
+            //if (otherClaims != null)
+            //{
+            //    nebulaUser.ExtraClaims.AddRange(otherClaims.Select(c => new Claim(c.Name, c.Value)));
+            //    nebulaUser.ExtraClaims.AddRange(otherClaims.Select(c => new Claim(c.Name + "Exp", c.ExpiresOnUTC.Seconds.ToString())));
+            //}
+            //nebulaUser.OrgRoles.AddRange(user.Private.OrganizationRoles.ToList());
+            return GenerateToken(nebulaUser);
+        }
+
+        private string GenerateToken(NebulaUser user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var tokenExpiration = DateTime.UtcNow.AddDays(7);
+            var claims = user.ToClaims().ToArray();
+            var subject = new ClaimsIdentity(claims);
+            var token = tokenHandler.CreateJwtSecurityToken(null, null, subject, null, tokenExpiration, DateTime.UtcNow, _creds);
+
+            return tokenHandler.WriteToken(token);
+        }
+
+        private byte[] ComputeSaltedHash(string plainText, ReadOnlySpan<byte> salt)
+        {
+            return ComputeSaltedHash(Encoding.UTF8.GetBytes(plainText), salt);
+        }
+
+        private byte[] ComputeSaltedHash(ReadOnlySpan<byte> plainText, ReadOnlySpan<byte> salt)
+        {
+            byte[] plainTextWithSaltBytes = new byte[plainText.Length + salt.Length];
+
+            plainText.CopyTo(plainTextWithSaltBytes.AsSpan());
+            salt.CopyTo(plainTextWithSaltBytes.AsSpan(plainText.Length));
+
+            return hasher.ComputeHash(plainTextWithSaltBytes);
+        }
+
+        private async Task<bool> IsPasswordCorrect(string password, UserFullRecord user)
+        {
+            var hash = ComputeSaltedHash(password, user.Server.PasswordSalt.Span);
+            if (CryptographicOperations.FixedTimeEquals(user.Server.PasswordHash.Span, hash))
+                return true;
+
+            return false;
         }
     }
 }

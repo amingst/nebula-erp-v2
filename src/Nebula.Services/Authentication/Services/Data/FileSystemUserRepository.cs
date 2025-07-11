@@ -50,6 +50,12 @@ namespace Nebula.Services.Authentication.Services.Data
             if (fd.Exists)
                 return false;
 
+            if (!userNameIndex.TryAdd(user.Public.UserName, id))
+                return false;
+
+            if (!emailIndex.TryAdd(user.Private.Email, id))
+                return false;
+
             await File.WriteAllBytesAsync(fd.FullName, user.ToByteArray());
             return true;
         }
@@ -76,7 +82,7 @@ namespace Nebula.Services.Authentication.Services.Data
                 yield return UserRecord.Parser.ParseFrom(await File.ReadAllBytesAsync(fd.FullName));
         }
 
-        public async IAsyncEnumerable<UserRecord> GetAllByOrganization(Guid organizationId)
+        public IAsyncEnumerable<UserRecord> GetAllByOrganization(Guid organizationId)
         {
             //foreach (var fd in GetAllDataFiles())
             //{
@@ -92,7 +98,7 @@ namespace Nebula.Services.Authentication.Services.Data
             return Task.FromResult(GetAllDataFiles().Select(f => Guid.Parse(f.Name)).ToArray());
         }
 
-        public async Task<UserRecord> GetByEmail(string email)
+        public async Task<UserFullRecord> GetByEmail(string email)
         {
             if (emailIndex.TryGetValue(email, out var id))
                 return await GetById(id);
@@ -100,16 +106,16 @@ namespace Nebula.Services.Authentication.Services.Data
             return null;
         }
 
-        public async Task<UserRecord> GetById(Guid userId)
+        public async Task<UserFullRecord> GetById(Guid userId)
         {
             var fd = GetDataFilePath(userId);
             if (!fd.Exists)
                 return null;
 
-            return UserRecord.Parser.ParseFrom(await File.ReadAllBytesAsync(fd.FullName));
+            return UserFullRecord.Parser.ParseFrom(await File.ReadAllBytesAsync(fd.FullName));
         }
 
-        public async Task<UserRecord> GetByUserName(string userName)
+        public async Task<UserFullRecord> GetByUserName(string userName)
         {
             if (userNameIndex.TryGetValue(userName, out var id))
                 return await GetById(id);

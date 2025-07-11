@@ -13,9 +13,9 @@ namespace Nebula.Services.Authentication.Services.Data
         Task<bool> Exists(Guid userId);
         Task<bool> EmailTaken(string email);
         Task<bool> UserNameTaken(string userName);
-        Task<UserRecord?> GetById(Guid userId);
-        Task<UserRecord?> GetByEmail(string email);
-        Task<UserRecord?> GetByUserName(string userName);
+        Task<UserFullRecord?> GetById(Guid userId);
+        Task<UserFullRecord?> GetByEmail(string email);
+        Task<UserFullRecord?> GetByUserName(string userName);
         Task<bool> Delete(Guid userId);
         Task<Guid[]> GetAllUserIds();
         IAsyncEnumerable<UserRecord> GetAll();

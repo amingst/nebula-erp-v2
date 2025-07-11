@@ -26,8 +26,8 @@ message RegisterUserRequest {
 }
 
 message AutheticateUserRequest {
-	string Error = 1;
-	string Token = 2;
+	string UserName = 1;
+	string Password = 2;
 }
 
 message AuthenticateUserResponse {
