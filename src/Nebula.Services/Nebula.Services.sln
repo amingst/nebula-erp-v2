@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36301.6 d17.14
+VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Authentication.Services", "Authentication\Services\Nebula.Services.Authentication.Services.csproj", "{BB24B0E2-2411-EFE4-80D0-B385F180CFCE}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Fragments", "Fragments\Nebula.Services.Fragments.csproj", "{1EB49CE2-3236-9333-2B65-17499562A7BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Base", "Base\Nebula.Services.Base.csproj", "{CA3FF956-D934-9210-4460-4CD778DA37DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Organizations", "Organizations\Nebula.Services.Organizations.csproj", "{41E701DE-164F-D192-0820-2E43B0C3DDE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{CA3FF956-D934-9210-4460-4CD778DA37DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA3FF956-D934-9210-4460-4CD778DA37DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA3FF956-D934-9210-4460-4CD778DA37DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41E701DE-164F-D192-0820-2E43B0C3DDE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41E701DE-164F-D192-0820-2E43B0C3DDE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41E701DE-164F-D192-0820-2E43B0C3DDE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41E701DE-164F-D192-0820-2E43B0C3DDE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

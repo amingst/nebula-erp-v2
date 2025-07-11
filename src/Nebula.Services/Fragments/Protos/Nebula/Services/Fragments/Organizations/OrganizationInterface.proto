@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Organziations;
+import "google/api/annotations.proto";
+import "Protos/Nebula/Services/Fragments/Organizations/OrganizationRecord.proto";
+
+service OrganizationInterface {
+	rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/organizations"
+			body: "*"
+		};
+	}
+
+	rpc JoinOrganization (JoinOrganizationRequest) returns (JoinOrganizationResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/organizations/join"
+			body: "*"
+		};
+	}
+
+	rpc LeaveOrganization (LeaveOrganizationRequest) returns (LeaveOrganizationResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/organizations/leave"
+			body: "*"
+		};
+	}
+}
+
+message CreateOrganizationRequest {
+	string OrganizationName = 1;
+}
+
+message CreateOrganizationResponse {
+	string Error = 1;
+	Nebula.Services.Fragments.Organizations.OrganizationRecord Record = 2;
+}
+
+message JoinOrganizationRequest {
+	string OrganizationId = 1;
+}
+
+message JoinOrganizationResponse {
+	string Error = 1;
+}
+
+message LeaveOrganizationRequest {
+	string OrganizationId = 1;
+}
+
+message LeaveOrganizationResponse {
+	string Error = 1;
+}

@@ -5,6 +5,8 @@
   <ItemGroup>
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Organizations\OrganizationInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Organizations\OrganizationRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />
   </ItemGroup>
   <ItemGroup>
@@ -21,6 +23,8 @@
   <ItemGroup>
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\OrganizationInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\OrganizationRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />
   </ItemGroup>
 </Project>

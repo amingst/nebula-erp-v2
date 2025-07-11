@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Organizations;
+import "google/protobuf/timestamp.proto";
+
+message OrganizationRecord {
+	string OrganizationId = 1;
+	string OrganizationName = 2;
+	repeated string EmployeeIds = 3;
+	repeated string CustomerIds = 4;
+
+	google.protobuf.Timestamp CreatedUTC = 30;
+	string CreatedBy = 31;
+	google.protobuf.Timestamp LastModifiedUTC = 32;
+	string LastModifiedBy = 33;
+	google.protobuf.Timestamp DisabledUTC = 34;
+	string DisabledBy = 35;
+}

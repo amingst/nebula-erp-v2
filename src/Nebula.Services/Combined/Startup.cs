@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Nebula.Services.Authentication.Shared.Extensions;
 using Nebula.Services.Base.Models;
 using Nebula.Services.Combined.Models;
+using Nebula.Services.Organizations.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,6 +86,7 @@ namespace Nebula.Services.Combined
             services.AddJwtAuthentication();
 
             services.AddAuthenticationClasses();
+            services.AddOrganizationClasses();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -113,6 +115,7 @@ namespace Nebula.Services.Combined
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAuthenticationEndpoints();
+                endpoints.MapOrganizationEndpoints();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"
