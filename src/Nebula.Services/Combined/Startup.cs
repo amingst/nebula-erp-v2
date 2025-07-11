@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Nebula.Services.Authentication.Shared.Extensions;
+using Nebula.Services.Base.Models;
 using Nebula.Services.Combined.Models;
 using System;
 using System.Collections.Generic;
@@ -78,7 +80,9 @@ namespace Nebula.Services.Combined
 
             services.AddGrpcSwagger();
 
-            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+                
+            services.AddJwtAuthentication();
 
             services.AddAuthenticationClasses();
         }
@@ -103,6 +107,8 @@ namespace Nebula.Services.Combined
                 Program.IsDevelopment = true;
 
             app.UseRouting();
+
+            app.UseJwtApiAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

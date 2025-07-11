@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Authentication\Shared\Nebula.Services.Authentication.Shared.csproj" />
     <ProjectReference Include="..\Fragments\Nebula.Services.Fragments.csproj" />
   </ItemGroup>
 

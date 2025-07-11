@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Authentication;
+import "google/protobuf/timestamp.proto";
+import "Protos/Nebula/Services/Fragments/Shared/OrganizationRoleAssignment.proto";
+
+message UserPublicRecord {
+	string UserId = 1;
+	string UserName = 2;
+	string DisplayName = 3;
+	repeated string Identites = 4;
+
+	google.protobuf.Timestamp CreatedUTC = 5;
+	google.protobuf.Timestamp LastModifiedUTC = 6;
+	google.protobuf.Timestamp LastLoginUTC = 7;
+	google.protobuf.Timestamp DisabledUtc = 8;
+}
+
+message UserPrivateRecord {
+	string Email = 1;
+	repeated string Roles = 2;
+	repeated Nebula.Services.Fragments.Shared.OrganizationRoleAssignment OrganizationRoles = 3;
+}
+
+message UserServerRecord {
+	bytes PasswordHash = 1;
+	bytes PasswordSalt = 2;
+}
+
+message UserFullRecord {
+	UserPublicRecord Public = 1;
+	UserPrivateRecord Private = 2;
+	UserServerRecord Server = 3;
+}
+
+message UserRecord {
+	UserPublicRecord Public = 1;
+	UserPrivateRecord Private = 2;
+}

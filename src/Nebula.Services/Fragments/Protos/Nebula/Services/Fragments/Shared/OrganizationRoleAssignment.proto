@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Shared;
+
+message OrganizationRoleAssignment {
+  string OrganizationId = 1;
+  repeated string Roles = 2;
+}

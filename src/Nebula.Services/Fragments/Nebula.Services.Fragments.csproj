@@ -4,6 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.Net.Client" Version="2.65.0" />
@@ -18,5 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />
   </ItemGroup>
 </Project>

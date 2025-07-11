@@ -1,11 +1,36 @@
 ﻿syntax = "proto3";
 
 package Nebula.Services.Fragments.Authentication;
+import "google/api/annotations.proto";
 
 service UserInterface {
-	rpc AuthenticateUser(AutheticateUserRequest) returns (AuthenticateUserResponse) {}
+	rpc RegisterUser (RegisterUserRequest) returns (AuthenticateUserResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/auth/register"
+			body: "*"
+		};
+	}
+	rpc AuthenticateUser(AutheticateUserRequest) returns (AuthenticateUserResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/auth/login"
+			body: "*"
+		};
+	}
 }
 
-message AutheticateUserRequest {}
+message RegisterUserRequest {
+	string UserName = 1;
+	string Email = 2;
+	string DisplayName = 3;
+	string Password = 4;
+}
 
-message AuthenticateUserResponse {}
+message AutheticateUserRequest {
+	string Error = 1;
+	string Token = 2;
+}
+
+message AuthenticateUserResponse {
+	string Error = 1;
+	string Token = 2;
+}
