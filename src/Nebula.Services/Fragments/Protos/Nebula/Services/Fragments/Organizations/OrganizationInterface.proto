@@ -25,6 +25,12 @@ service OrganizationInterface {
 			body: "*"
 		};
 	}
+
+	rpc GetOrganization (GetOrganizationRequest) returns (GetOrganizationResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/organizations/{OrganizationId}"
+		};
+	}
 }
 
 message CreateOrganizationRequest {
@@ -50,4 +56,13 @@ message LeaveOrganizationRequest {
 
 message LeaveOrganizationResponse {
 	string Error = 1;
+}
+
+message GetOrganizationRequest {
+	string OrganizationId = 1;
+}
+
+message GetOrganizationResponse {
+	string Error = 1;
+	Nebula.Services.Fragments.Organizations.OrganizationRecord Record = 2;
 }

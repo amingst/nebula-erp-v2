@@ -8,6 +8,7 @@ message OrganizationRecord {
 	string OrganizationName = 2;
 	repeated string EmployeeIds = 3;
 	repeated string CustomerIds = 4;
+	string OwnerId = 5;
 
 	google.protobuf.Timestamp CreatedUTC = 30;
 	string CreatedBy = 31;
