@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Inventory;
+import "google/api/annotations.proto";
+import "Protos/Nebula/Services/Fragments/Inventory/BatchRecord.proto";
+
+service BatchInterface {
+	rpc GetBatches (GetBatchesRequest) returns (GetBatchesResponse) {
+	option (google.api.http) = {
+	  get: "/api/v1/inventory/products/{ProductId}/locations/{LocationId}/batches"
+	};
+  }
+  rpc CreateBatch (CreateBatchRequest) returns (CreateBatchResponse) {
+	option (google.api.http) = {
+	  post: "/api/v1/inventory/batches"
+	  body: "*"
+	};
+  }
+}
+
+message GetBatchesRequest {
+	string ProductId = 1;
+	string LocationId = 2;
+}
+
+message GetBatchesResponse {
+  string Error = 1;
+  repeated Nebula.Services.Fragments.Inventory.BatchRecord Batches = 2;
+}
+
+message CreateBatchRequest {}
+
+message CreateBatchResponse {}

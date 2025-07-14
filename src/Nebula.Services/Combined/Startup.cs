@@ -87,6 +87,7 @@ namespace Nebula.Services.Combined
 
             services.AddAuthenticationClasses();
             services.AddOrganizationClasses();
+            services.AddInventoryClasses();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -116,6 +117,7 @@ namespace Nebula.Services.Combined
             {
                 endpoints.MapAuthenticationEndpoints();
                 endpoints.MapOrganizationEndpoints();
+                endpoints.MapInventoryEndpoints();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Inventory;
+import "google/protobuf/timestamp.proto";
+
+message BatchRecord {
+	string BatchId = 1;
+	string ProductId = 2;
+	string OrganizationId = 3;
+	string LocationId = 4;
+
+	string SerialNumber = 5;
+	uint32 Quantity = 6;
+	double UnitCost = 7;
+	string Currency = 8;
+	
+  google.protobuf.Timestamp ExpiryDate = 30;
+  google.protobuf.Timestamp ReceivedDate = 31;
+}

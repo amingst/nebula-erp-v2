@@ -9,17 +9,26 @@ namespace Nebula.Services.Authentication.Shared
 {
     public class NebulaUser : ClaimsPrincipal
     {
-        // Global Roles That Exist Across All Organizations
+        // Global Roles
         public const string ROLE_GLOBAL_ADMIN = "global_admin";
         public const string ROLE_GLOBAL_SYSTEM_AUDITOR = "global_system_auditor";
         public const string ROLE_GLOBAL_SUPPORT_AGENT = "global_support_agent";
 
-        // Organization Level Roles
+        // Org Roles (Core)
         public const string ROLE_ORG_OWNER = "org_owner";
         public const string ROLE_ORG_ADMIN = "org_admin";
         public const string ROLE_ORG_MANAGER = "org_manager";
         public const string ROLE_ORG_USER = "org_user";
         public const string ROLE_ORG_VIEWER = "org_viewer";
+
+        // Org Roles (Extended)
+        public const string ROLE_ORG_INVENTORY_MANAGER = "org_inventory_manager";
+        public const string ROLE_ORG_INVENTORY_AUDITOR = "org_inventory_auditor";
+        public const string ROLE_ORG_HR_MANAGER = "org_hr_manager";
+        public const string ROLE_ORG_BILLING_MANAGER = "org_billing_manager";
+        public const string ROLE_ORG_OPERATIONS_LEAD = "org_operations_lead";
+        public const string ROLE_ORG_INTEGRATIONS_ADMIN = "org_integrations_admin";
+
 
         // Claim Type Constants
         public const string IdType = "Id";
@@ -57,6 +66,20 @@ namespace Nebula.Services.Authentication.Shared
         public bool IsOrgViewer(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_VIEWER);
         public bool IsOrgAdminOrHigher(Guid orgId) => IsOrgOwner(orgId) || IsOrgAdmin(orgId) || IsGlobalAdmin;
         public bool IsOrgManagerOrHigher(Guid orgId) => IsOrgAdminOrHigher(orgId) || IsOrgManager(orgId);
+        public bool IsInventoryManager(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_INVENTORY_MANAGER);
+        public bool IsInventoryAuditor(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_INVENTORY_AUDITOR);
+        public bool IsHRManager(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_HR_MANAGER);
+        public bool IsBillingManager(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_BILLING_MANAGER);
+        public bool IsOperationsLead(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_OPERATIONS_LEAD);
+        public bool IsIntegrationsAdmin(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_INTEGRATIONS_ADMIN);
+
+        // Optional Role Hierarchy Helpers
+        public bool IsInventoryManagerOrHigher(Guid orgId) =>
+            IsOrgManagerOrHigher(orgId) || IsInventoryManager(orgId);
+
+        public bool IsBillingManagerOrHigher(Guid orgId) =>
+            IsOrgManagerOrHigher(orgId) || IsBillingManager(orgId);
+
 
         // Claims
         public IEnumerable<Claim> ToClaims()

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Inventory;
+import "google/protobuf/timestamp.proto";
+
+message SupplierRecord {
+	string SupplierId = 1;
+	string OrganizationId = 2;
+	string Name = 3;
+	string ContactEmail = 4;
+	string Phone = 5;
+	string Address = 6;
+	google.protobuf.Timestamp CreatedUTC = 30;
+	string CreatedBy = 31;
+	google.protobuf.Timestamp LastModifiedUTC = 32;
+	string LastModifiedBy = 33;
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Inventory;
+import "google/protobuf/timestamp.proto";
+
+enum StockMovementType {
+	StockMovementRestock = 0;
+	StockMovementSale = 1;
+	StockMovementTransfer = 2;
+	StockMovementAdjustment = 3;
+}
+
+message StockMovementRecord {
+	string MovementId = 1;
+	string OrganizationId = 2;
+	string ProductId = 3;
+	string LocationId = 4;
+	StockMovementType Type = 5;
+	uint32 Quantity = 6;
+	string Reason = 7;
+
+
+	google.protobuf.Timestamp CreatedUTC = 30;
+	string CreatedBy = 31;
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Inventory;
+import "google/protobuf/timestamp.proto";
+
+message StockRecord {
+	string StockId = 1;
+	string ProductId = 2;
+	string OrganizationId = 3;
+	string LocationId = 4;
+	uint32 QuantityAvailible = 5;
+	uint32 QuantityReserved = 6;
+
+	google.protobuf.Timestamp CreatedUTC = 30;
+	string CreatedBy = 31;
+	google.protobuf.Timestamp LastModifiedUTC = 32;
+	string LastModifiedBy = 33;
+	google.protobuf.Timestamp LastStockedUTC = 34;
+	string LastStockedBy = 35;
+}

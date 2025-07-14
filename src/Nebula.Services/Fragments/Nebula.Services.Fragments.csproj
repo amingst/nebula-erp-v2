@@ -1,10 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\BatchInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\BatchRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\InventoryInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\LocationInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\LocationRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\MovementInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\ProductRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\ProductSupplierLink.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\StockInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\StockMovementRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\StockRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\SupplierInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Inventory\SupplierRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Organizations\OrganizationInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Organizations\OrganizationRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />
@@ -23,6 +36,19 @@
   <ItemGroup>
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\BatchInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\BatchRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\InventoryInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\LocationInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\LocationRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\MovementInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\ProductRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\ProductSupplierLink.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\StockInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\StockMovementRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\StockRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\SupplierInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\SupplierRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\OrganizationInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\OrganizationRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />

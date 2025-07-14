@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Inventory;
+import "google/api/annotations.proto";
+import "Protos/Nebula/Services/Fragments/Inventory/SupplierRecord.proto";
+
+service SupplierInterface {
+	rpc CreateSupplier (CreateSupplierRequest) returns (CreateSupplierResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/inventory/{OrganizationId}/suppliers"
+			body: "*"
+		};
+	}
+	rpc ListSuppliers (ListSuppliersRequest) returns (ListSuppliersResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/inventory/{OrganizationId}/suppliers"
+		};
+	}
+}
+
+message CreateSupplierRequest {
+	string OrganizationId = 1;
+	string Name = 2;
+	string ContactEmail = 3;
+	string Phone = 4;
+	string Address = 5;
+}
+
+message CreateSupplierResponse {
+	string Error = 1;
+	Nebula.Services.Fragments.Inventory.SupplierRecord Record = 2;
+}
+
+message ListSuppliersRequest {
+	string OrganizationId = 1;
+}
+
+message ListSuppliersResponse {
+	repeated Nebula.Services.Fragments.Inventory.SupplierRecord Suppliers = 1;
+	string Error = 2;
+}
