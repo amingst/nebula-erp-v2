@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.HR;
+import "google/protobuf/timestamp.proto";
+
+message TimesheetRecord {
+	string TimesheetId = 1;
+	string OrganizationId = 2;
+	string EmployeeId = 3;
+	google.protobuf.Timestamp ClockIn = 4;
+	google.protobuf.Timestamp ClockOut = 5;
+	string Notes = 6;
+
+	google.protobuf.Timestamp CreatedUTC = 30;
+	string CreatedBy = 31;
+}

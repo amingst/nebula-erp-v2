@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.HR;
+import "google/protobuf/timestamp.proto";
+
+message EmployeeRecord {
+	string EmployeeId = 1;
+	string OrganizationId = 2;
+	string FirstName = 3;
+	string LastName = 4;
+	string Email = 5;
+	string Phone = 6;
+	string JobTitle = 7;
+	string Department = 8;
+	google.protobuf.Timestamp StartUTC = 9;
+	google.protobuf.Timestamp EndUTC = 10;
+	bool IsActive = 11;
+	string ManagerId = 12;
+	google.protobuf.Timestamp CreatedUTC = 30;
+	string CreatedBy = 31;
+	google.protobuf.Timestamp LastModifiedUTC = 32;
+	string LastModifiedBy = 33;
+	google.protobuf.Timestamp DisabledUTC = 34;
+	string DisabledBy = 35;
+	string DisabledReason = 36;
+}

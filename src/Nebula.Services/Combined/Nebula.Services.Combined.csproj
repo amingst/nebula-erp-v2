@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Authentication\Services\Nebula.Services.Authentication.Services.csproj" />
+    <ProjectReference Include="..\HR\Nebula.Services.HR.csproj" />
     <ProjectReference Include="..\Inventory\Nebula.Services.Inventory.csproj" />
     <ProjectReference Include="..\Organizations\Nebula.Services.Organizations.csproj" />
   </ItemGroup>

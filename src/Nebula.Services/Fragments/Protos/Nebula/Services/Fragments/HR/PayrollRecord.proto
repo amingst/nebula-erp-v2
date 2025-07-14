@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.HR;
+import "google/protobuf/timestamp.proto";
+
+message PayrollRecord {
+	string PayrollId = 1;
+	string OrganizationId = 2;
+	string EmployeeId = 3;
+
+	string PayPeriod = 4;
+	double GrossPay = 5;
+	double Deductions = 6;
+	double NetPay = 7;
+
+	google.protobuf.Timestamp IssuedAtUTC = 8;
+	string IssuedBy = 9;
+	string Notes = 10;
+
+	google.protobuf.Timestamp CreatedUTC = 30;
+	string CreatedBy = 31;
+}
