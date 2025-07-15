@@ -2,13 +2,13 @@
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using Nebula.Services.Base.Extensions;
-using Nebula.Services.Fragments.Inventory;
 using Nebula.Services.Inventory.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Nebula.Services.Fragments.Inventory;
 
 namespace Nebula.Services.Inventory.Services
 {
