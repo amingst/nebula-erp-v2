@@ -401,3 +401,17 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Generated Protocol Buffer files
+src/Nebula.Fragments/ts-gen/gen/
+src/Nebula.Fragments/ts-gen/node_modules/
+src/Nebula.Fragments/ts-gen/package-lock.json
+src/Nebula.Fragments/ts-gen/dist/
+
+# Copied protobuf files in nebula.web
+src/nebula.web/src/lib/protos/
+
+# Protocol Buffer generation artifacts (anywhere in the project)
+**/*_pb.ts
+**/*_connect.ts
+**/gen/**/*.ts
