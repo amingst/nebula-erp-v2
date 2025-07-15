@@ -11,5 +11,7 @@ namespace Nebula.Services.HR.Data
     {
         Task<bool> Create(PayrollRecord payroll);
         Task<bool> Exists(Guid organizationId, Guid payrollId);
+        IAsyncEnumerable<PayrollRecord> GetByEmployee(Guid organizationId, Guid employeeId);
+        IAsyncEnumerable<PayrollRecord> GetAll(Guid organizationId);
     }
 }

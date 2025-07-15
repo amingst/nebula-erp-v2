@@ -16,7 +16,4 @@ message PayrollRecord {
 	google.protobuf.Timestamp IssuedAtUTC = 8;
 	string IssuedBy = 9;
 	string Notes = 10;
-
-	google.protobuf.Timestamp CreatedUTC = 30;
-	string CreatedBy = 31;
 }

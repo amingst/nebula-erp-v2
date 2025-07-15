@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "Protos/Nebula/Services/Fragments/HR/EmployeeRecord.proto";
 import "Protos/Nebula/Services/Fragments/HR/PayrollRecord.proto";
 import "Protos/Nebula/Services/Fragments/HR/TimesheetRecord.proto";
+import "google/protobuf/timestamp.proto";
 
 service HRInterface {
   rpc GetEmployees (GetEmployeesRequest) returns (GetEmployeesResponse) {
@@ -20,14 +21,14 @@ service HRInterface {
     };
   }
 
-  rpc CreateEmployee (Nebula.Services.Fragments.HR.EmployeeRecord) returns (HRMutationResponse) {
+  rpc CreateEmployee (CreateEmployeeRequest) returns (HRMutationResponse) {
     option (google.api.http) = {
       post: "/api/v1/hr/employees"
       body: "*"
     };
   }
 
-  rpc UpdateEmployee (Nebula.Services.Fragments.HR.EmployeeRecord) returns (HRMutationResponse) {
+  rpc UpdateEmployee (UpdateEmployeeRequest) returns (HRMutationResponse) {
     option (google.api.http) = {
       put: "/api/v1/hr/employees/{EmployeeId}"
       body: "*"
@@ -59,7 +60,7 @@ service HRInterface {
     };
   }
 
-  rpc CreatePayroll (Nebula.Services.Fragments.HR.PayrollRecord) returns (HRMutationResponse) {
+  rpc CreatePayroll (CreatePayrollRequest) returns (CreatePayrollResponse) {
     option (google.api.http) = {
       post: "/api/v1/hr/payroll"
       body: "*"
@@ -78,7 +79,7 @@ service HRInterface {
     };
   }
 
-  rpc LogTimesheet (Nebula.Services.Fragments.HR.TimesheetRecord) returns (HRMutationResponse) {
+  rpc LogTimesheet (LogTimesheetRequest) returns (LogTimesheetResponse) {
     option (google.api.http) = {
       post: "/api/v1/hr/timesheet"
       body: "*"
@@ -130,6 +131,34 @@ message GetPayrollsResponse {
   repeated Nebula.Services.Fragments.HR.PayrollRecord Records = 2;
 }
 
+message CreatePayrollRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+  string PayPeriod = 3;
+  double GrossPay = 4;
+  double Deductions = 5;
+double NetPay = 6;
+string Notes = 7;
+}
+
+message CreatePayrollResponse {
+    string Error = 1;
+ Nebula.Services.Fragments.HR.PayrollRecord Record = 2;    
+}
+
+message LogTimesheetRequest {
+    string OrgaizationId = 1;
+    string EmployeeId = 2;
+    google.protobuf.Timestamp ClockIn = 3;
+    google.protobuf.Timestamp ClockOut = 4;
+    string Notes = 5;
+}
+
+message LogTimesheetResponse {
+    string Error = 1;
+    Nebula.Services.Fragments.HR.TimesheetRecord Record = 2;
+}
+
 message GetTimesheetsByEmployeeRequest {
   string OrganizationId = 1;
   string EmployeeId = 2;
@@ -142,6 +171,23 @@ message ListTimesheetsRequest {
 message GetTimesheetsResponse {
   string Error = 1;
   repeated Nebula.Services.Fragments.HR.TimesheetRecord Records = 2;
+}
+
+message CreateEmployeeRequest {
+    string OrganizationId = 1;
+    string FirstName = 2;
+    string LastName = 3;
+    string Email = 4;
+    string Phone = 5;
+    string JobTitle = 6;
+    string Department = 7;
+    google.protobuf.Timestamp StartUTC = 8;
+    google.protobuf.Timestamp EndUTC = 9;
+    string ManagerId = 10;
+}
+
+message UpdateEmployeeRequest {
+    Nebula.Services.Fragments.HR.EmployeeRecord Record = 1;
 }
 
 message HRMutationResponse {

@@ -11,5 +11,7 @@ namespace Nebula.Services.HR.Data
     {
         Task<bool> Create(TimesheetRecord timesheet);
         Task<bool> Exists(Guid organizationId, Guid TimesheetId);
+        IAsyncEnumerable<TimesheetRecord> GetByEmployee(Guid organizationId, Guid employeeId);
+        IAsyncEnumerable<TimesheetRecord> GetAll(Guid organizationId);
     }
 }

@@ -14,5 +14,6 @@ namespace Nebula.Services.HR.Data
         Task<EmployeeRecord?> GetById(Guid organizationId, Guid employeeId);
         IAsyncEnumerable<Guid> GetAllIds(Guid organizationId);
         IAsyncEnumerable<EmployeeRecord?> GetAll(Guid organizationId);
+        Task<bool> Update(EmployeeRecord employee);
     }
 }

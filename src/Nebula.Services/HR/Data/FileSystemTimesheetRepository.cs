@@ -28,5 +28,15 @@ namespace Nebula.Services.HR.Data
         {
             throw new NotImplementedException();
         }
+
+        public IAsyncEnumerable<TimesheetRecord> GetAll(Guid organizationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IAsyncEnumerable<TimesheetRecord> GetByEmployee(Guid organizationId, Guid employeeId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

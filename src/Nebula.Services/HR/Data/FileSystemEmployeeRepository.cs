@@ -43,5 +43,10 @@ namespace Nebula.Services.HR.Data
         {
             throw new NotImplementedException();
         }
+
+        public Task<bool> Update(EmployeeRecord employee)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
