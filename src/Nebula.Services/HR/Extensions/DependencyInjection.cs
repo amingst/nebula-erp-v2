@@ -22,7 +22,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void MapHREndpoints(this IEndpointRouteBuilder endpoints)
         {
-            endpoints.MapGrpcService<HRService>();
+            endpoints.MapGrpcService<EmployeeService>();
+            endpoints.MapGrpcService<PayrollService>();
+            endpoints.MapGrpcService<TimesheetService>();
         }
     }
 }

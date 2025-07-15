@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.HR;
+
+import "google/api/annotations.proto";
+import "Protos/Nebula/Services/Fragments/HR/EmployeeRecord.proto";
+import "google/protobuf/timestamp.proto";
+
+service EmployeeInterface {
+  rpc GetEmployees (GetEmployeesRequest) returns (GetEmployeesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/hr/{OrganizationId}/employees"
+    };
+  }
+
+  rpc GetEmployeeById (GetEmployeeByIdRequest) returns (GetEmployeeByIdResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/hr/{OrganizationId}/employees/{EmployeeId}"
+    };
+  }
+
+  rpc CreateEmployee (CreateEmployeeRequest) returns (HRMutationResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/hr/employees"
+      body: "*"
+    };
+  }
+
+  rpc UpdateEmployee (UpdateEmployeeRequest) returns (HRMutationResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/hr/employees/{EmployeeId}"
+      body: "*"
+    };
+  }
+
+  rpc TerminateEmployee (TerminateEmployeeRequest) returns (HRMutationResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/hr/employees/{EmployeeId}/terminate"
+      body: "*"
+    };
+  }
+
+  rpc DeleteEmployee (DeleteEmployeeRequest) returns (HRMutationResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/hr/{OrganizationId}/employees/{EmployeeId}"
+    };
+  }
+}
+
+message GetEmployeesRequest {
+  string OrganizationId = 1;
+}
+
+message GetEmployeesResponse {
+  string Error = 1;
+  repeated Nebula.Services.Fragments.HR.EmployeeRecord Records = 2;
+}
+
+message GetEmployeeByIdRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+}
+
+message GetEmployeeByIdResponse {
+  string Error = 1;
+  Nebula.Services.Fragments.HR.EmployeeRecord Record = 2;
+}
+
+message TerminateEmployeeRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+  string Reason = 3;
+}
+
+message DeleteEmployeeRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+}
+
+message CreateEmployeeRequest {
+    string OrganizationId = 1;
+    string FirstName = 2;
+    string LastName = 3;
+    string Email = 4;
+    string Phone = 5;
+    string JobTitle = 6;
+    string Department = 7;
+    google.protobuf.Timestamp StartUTC = 8;
+    google.protobuf.Timestamp EndUTC = 9;
+    string ManagerId = 10;
+}
+
+message UpdateEmployeeRequest {
+    string EmployeeId = 1;
+    Nebula.Services.Fragments.HR.EmployeeRecord Record = 2;
+}
+
+message HRMutationResponse {
+  string Error = 1;
+  bool Success = 2;
+}

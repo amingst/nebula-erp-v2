@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.HR;
+
+import "google/api/annotations.proto";
+import "Protos/Nebula/Services/Fragments/HR/TimesheetRecord.proto";
+import "google/protobuf/timestamp.proto";
+
+service TimesheetInterface {
+  rpc GetTimesheetsByEmployee (GetTimesheetsByEmployeeRequest) returns (GetTimesheetsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/hr/{OrganizationId}/employees/{EmployeeId}/timesheet"
+    };
+  }
+
+  rpc ListTimesheets (ListTimesheetsRequest) returns (GetTimesheetsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/hr/{OrganizationId}/employees/timesheet"
+    };
+  }
+
+  rpc LogTimesheet (LogTimesheetRequest) returns (LogTimesheetResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/hr/timesheet"
+      body: "*"
+    };
+  }
+}
+
+message GetTimesheetsByEmployeeRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+}
+
+message ListTimesheetsRequest {
+  string OrganizationId = 1;
+}
+
+message GetTimesheetsResponse {
+  string Error = 1;
+  repeated Nebula.Services.Fragments.HR.TimesheetRecord Records = 2;
+}
+
+message LogTimesheetRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+  google.protobuf.Timestamp ClockIn = 3;
+  google.protobuf.Timestamp ClockOut = 4;
+  string Notes = 5;
+}
+
+message LogTimesheetResponse {
+  string Error = 1;
+  Nebula.Services.Fragments.HR.TimesheetRecord Record = 2;
+}

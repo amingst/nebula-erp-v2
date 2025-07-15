@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.HR;
+
+import "google/api/annotations.proto";
+import "Protos/Nebula/Services/Fragments/HR/PayrollRecord.proto";
+
+service PayrollInterface {
+  rpc GetPayrollsByEmployee (GetPayrollsByEmployeeRequest) returns (GetPayrollsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/hr/{OrganizationId}/employees/{EmployeeId}/payroll"
+    };
+  }
+
+  rpc ListPayrolls (ListPayrollsRequest) returns (GetPayrollsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/hr/{OrganizationId}/employees/payroll"
+    };
+  }
+
+  rpc CreatePayroll (CreatePayrollRequest) returns (CreatePayrollResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/hr/payroll"
+      body: "*"
+    };
+  }
+}
+
+message GetPayrollsByEmployeeRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+}
+
+message ListPayrollsRequest {
+  string OrganizationId = 1;
+}
+
+message GetPayrollsResponse {
+  string Error = 1;
+  repeated Nebula.Services.Fragments.HR.PayrollRecord Records = 2;
+}
+
+message CreatePayrollRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+  string PayPeriod = 3;
+  double GrossPay = 4;
+  double Deductions = 5;
+  double NetPay = 6;
+  string Notes = 7;
+}
+
+message CreatePayrollResponse {
+  string Error = 1;
+  Nebula.Services.Fragments.HR.PayrollRecord Record = 2;
+}

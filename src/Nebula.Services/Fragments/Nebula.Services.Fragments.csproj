@@ -6,7 +6,6 @@
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\HR\EmployeeRecord.proto" />
-    <None Remove="Protos\Nebula\Services\Fragments\HR\HRInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\HR\PayrollRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\HR\TimesheetRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Inventory\BatchInterface.proto" />
@@ -41,9 +40,11 @@
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\HR\EmployeeRecord.proto" />
-    <Protobuf Include="Protos\Nebula\Services\Fragments\HR\HRInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\HR\EmployeeInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\HR\PayrollRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\HR\PayrollInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\HR\TimesheetRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\HR\TimesheetInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\BatchInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\BatchRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\InventoryInterface.proto" />
