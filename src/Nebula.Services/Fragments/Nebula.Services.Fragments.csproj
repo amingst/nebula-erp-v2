@@ -3,6 +3,10 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Protos\Nebula\Services\Fragments\Accounting\AccountingInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Accounting\AccountRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Accounting\JournalEntryRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Accounting\TransactionRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\HR\EmployeeRecord.proto" />
@@ -37,8 +41,15 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Protos\Nebula\Services\Fragments\Accounting\TransactionRecord.proto" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Accounting\AccountingInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Accounting\AccountRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Accounting\JournalEntryRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
+	  <Protobuf Include="Protos\Nebula\Services\Fragments\Accounting\TransactionRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\HR\EmployeeRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\HR\EmployeeInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\HR\PayrollRecord.proto" />

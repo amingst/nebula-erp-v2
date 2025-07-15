@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Accounting;
+import "google/protobuf/timestamp.proto";
+
+enum TransactionType {
+	DEBIT = 0;
+	CREDIT = 1;
+}
+
+message TransactionRecord {
+  string TransactionId = 1;
+  string OrganizationId = 2;
+  string AccountId = 3;
+  double Amount = 4;
+  TransactionType Type = 5;
+  string Description = 6;
+  google.protobuf.Timestamp Timestamp = 7;
+}

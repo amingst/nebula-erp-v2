@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Accounting;
+
+enum AccountRecordType {
+	ASSET = 0;
+	LIABILITY = 1;
+	EQUITY = 2;
+	INCOME = 3;
+	EXPENSE = 4;
+}
+
+message AccountRecord {
+	string AccountId = 1;
+	string OrganizationId = 2;
+	string Name = 3;
+	AccountRecordType Type = 4;
+	string Code = 5;
+	string Description = 6;
+}

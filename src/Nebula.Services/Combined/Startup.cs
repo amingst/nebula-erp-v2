@@ -86,6 +86,7 @@ namespace Nebula.Services.Combined
             services.AddJwtAuthentication();
 
             services.AddAuthenticationClasses();
+            services.AddAccountingClasses();
             services.AddOrganizationClasses();
             services.AddInventoryClasses();
             services.AddHRClasses();
@@ -118,6 +119,7 @@ namespace Nebula.Services.Combined
             {
                 endpoints.MapAuthenticationEndpoints();
                 endpoints.MapOrganizationEndpoints();
+                endpoints.MapAccountingEndpoints();
                 endpoints.MapInventoryEndpoints();
                 endpoints.MapHREndpoints();
                 endpoints.MapControllerRoute(

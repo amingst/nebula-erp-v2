@@ -28,6 +28,10 @@ namespace Nebula.Services.Authentication.Shared
         public const string ROLE_ORG_BILLING_MANAGER = "org_billing_manager";
         public const string ROLE_ORG_OPERATIONS_LEAD = "org_operations_lead";
         public const string ROLE_ORG_INTEGRATIONS_ADMIN = "org_integrations_admin";
+        public const string ROLE_ORG_ACCOUNTING_MANAGER = "org_accounting_manager";
+        public const string ROLE_ORG_ACCOUNTANT = "org_accountant";
+        public const string ROLE_ORG_FINANCIAL_AUDITOR = "org_financial_auditor";
+
 
 
         // Claim Type Constants
@@ -72,6 +76,17 @@ namespace Nebula.Services.Authentication.Shared
         public bool IsBillingManager(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_BILLING_MANAGER);
         public bool IsOperationsLead(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_OPERATIONS_LEAD);
         public bool IsIntegrationsAdmin(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_INTEGRATIONS_ADMIN);
+        public bool IsAccountingManager(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_ACCOUNTING_MANAGER);
+        public bool IsAccountant(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_ACCOUNTANT);
+        public bool IsFinancialAuditor(Guid orgId) => IsInRoleForOrg(orgId, ROLE_ORG_FINANCIAL_AUDITOR);
+
+        // Optional hierarchy helpers
+        public bool IsAccountingManagerOrHigher(Guid orgId) =>
+            IsOrgManagerOrHigher(orgId) || IsAccountingManager(orgId);
+
+        public bool IsAccountantOrHigher(Guid orgId) =>
+            IsAccountingManagerOrHigher(orgId) || IsAccountant(orgId);
+
 
         // Optional Role Hierarchy Helpers
         public bool IsInventoryManagerOrHigher(Guid orgId) =>
