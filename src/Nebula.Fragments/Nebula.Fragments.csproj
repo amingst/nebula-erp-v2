@@ -7,6 +7,7 @@
     <None Remove="Protos\Nebula\Services\Fragments\Accounting\AccountRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Accounting\JournalEntryRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Accounting\TransactionRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Authentication\Claims.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\HR\EmployeeRecord.proto" />
@@ -47,6 +48,7 @@
     <Protobuf Include="Protos\Nebula\Services\Fragments\Accounting\AccountingInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Accounting\AccountRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Accounting\JournalEntryRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\Claims.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
 	  <Protobuf Include="Protos\Nebula\Services\Fragments\Accounting\TransactionRecord.proto" />
