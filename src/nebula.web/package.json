@@ -13,7 +13,9 @@
 		"react": "19.1.0",
 		"react-dom": "19.1.0",
 		"next": "15.4.1",
-		"@bufbuild/protobuf": "^1.4.2"
+		"@bufbuild/protobuf": "^1.10.1",
+		"@bufbuild/connect": "^0.13.0",
+		"@bufbuild/connect-node": "^0.13.0"
 	},
 	"devDependencies": {
 		"typescript": "^5",

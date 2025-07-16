@@ -1,0 +1,32 @@
+{
+	"typescript.validate.enable": false,
+	"typescript.showUnused": false,
+	"typescript.suggest.enabled": false,
+	"typescript.format.enable": false,
+	"typescript.reportStyleChecksAsWarnings": false,
+	"problems.showErrors": false,
+	"problems.showWarnings": false,
+	"typescript.preferences.includePackageJsonAutoImports": "off",
+	"typescript.suggest.autoImports": false,
+	"protobuf.lint.enable": false,
+	"protobuf.format.enable": false,
+	"protobuf.compile.enable": false,
+	"protobuf.path": "",
+	"protobuf.protoc_path": "",
+	"protobuf.protoc.options": [],
+	"protobuf.clang_format.enable": false,
+	"protobuf.linter.protolint.enable": false,
+	"protobuf.linter.protolint.path": "",
+	"protobuf.linter.buf.enable": false,
+	"protobuf.linter.buf.path": "",
+	"files.associations": {
+		"**/Protos/**/*_pb.ts": "typescript",
+		"**/*.proto": "plaintext"
+	},
+	"files.exclude": {
+		"**/src/lib/protos/Protos/**": false
+	},
+	"search.exclude": {
+		"**/src/lib/protos/Protos/**/*_pb.ts": true
+	}
+}

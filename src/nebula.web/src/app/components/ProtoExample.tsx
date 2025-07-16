@@ -1,10 +1,10 @@
 'use client';
 
+import { OrganizationRecord } from '@/lib/protos/Protos/Nebula/Services/Fragments/Organizations/OrganizationRecord_pb';
 import {
-	OrganizationRecord,
 	UserPublicRecord,
 	UserPrivateRecord,
-} from '@/lib/protos/index';
+} from '@/lib/protos/Protos/Nebula/Services/Fragments/Authentication/UserRecord_pb';
 import { Timestamp } from '@bufbuild/protobuf';
 
 interface ProtoExampleProps {

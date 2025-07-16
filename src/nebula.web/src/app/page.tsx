@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import ProtoExample from './components/ProtoExample';
+import LoginForm from './components/LoginForm';
 
 export default function Home() {
 	return (
@@ -52,8 +53,21 @@ export default function Home() {
 					</a>
 				</div>
 
-				{/* Protobuf Types Example */}
-				<ProtoExample />
+				{/* Login Form Section */}
+				<section className='w-full max-w-2xl'>
+					<h2 className='text-2xl font-bold mb-4 text-center'>
+						Authentication Test
+					</h2>
+					<LoginForm />
+				</section>
+
+				{/* Protobuf Example Section */}
+				<section className='w-full max-w-2xl'>
+					<h2 className='text-2xl font-bold mb-4 text-center'>
+						Protobuf Example
+					</h2>
+					<ProtoExample />
+				</section>
 			</main>
 			<footer className='row-start-3 flex gap-[24px] flex-wrap items-center justify-center'>
 				<a
