@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Routing;
 using Nebula.Authentication.Services;
 using Nebula.Services.Authentication.Services;
 using Nebula.Services.Authentication.Services.Data;
+using Nebula.Services.Authentication.Shared.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddAuthenticationClasses(this IServiceCollection services)
         {
             services.AddSingleton<IUserRepository, FileSystemUserRepository>();
+            services.AddScoped<NebulaUserHelper>();
             services.AddScoped<ClaimsClient>();
             return services;
         }

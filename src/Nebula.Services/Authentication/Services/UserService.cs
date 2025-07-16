@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Nebula.Services.Authentication.Services.Data;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace Nebula.Services.Authentication.Services
 {
+    [Authorize]
     public class UserService : UserInterface.UserInterfaceBase
     {
         private readonly ILogger<UserService> _logger;
@@ -32,6 +34,7 @@ namespace Nebula.Services.Authentication.Services
             _creds = new SigningCredentials(JwtExtensions.GetPrivateKey(), SecurityAlgorithms.EcdsaSha256);
         }
 
+        [AllowAnonymous]
         public override async Task<AuthenticateUserResponse> AuthenticateUser(AutheticateUserRequest request, ServerCallContext context)
         {
             if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
@@ -58,6 +61,7 @@ namespace Nebula.Services.Authentication.Services
             };
         }
 
+        [AllowAnonymous]
         public override async Task<AuthenticateUserResponse> RegisterUser(RegisterUserRequest request, ServerCallContext context)
         {
             var emailTaken = await _users.EmailTaken(request.Email);
@@ -73,6 +77,7 @@ namespace Nebula.Services.Authentication.Services
                 {
                     UserId = Guid.NewGuid().ToString(),
                     UserName = request.UserName,
+                    DisplayName = request.DisplayName ?? request.UserName,
                 },
                 Private = new UserPrivateRecord
                 {
@@ -82,6 +87,10 @@ namespace Nebula.Services.Authentication.Services
                 {
                 }
             };
+
+            // Add default identity and role for all users
+            newUser.Public.Identites.Add("user");
+            newUser.Private.Roles.Add(NebulaUser.ROLE_ORG_USER);
 
 
             byte[] salt = RandomNumberGenerator.GetBytes(16);

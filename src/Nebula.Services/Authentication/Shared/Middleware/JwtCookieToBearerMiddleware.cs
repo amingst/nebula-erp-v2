@@ -20,12 +20,24 @@ namespace Nebula.Services.Authentication.Shared.Middleware
 
         public async Task Invoke(HttpContext context)
         {
+            Console.WriteLine($"[JWT Middleware] Processing request: {context.Request.Path}");
+            Console.WriteLine($"[JWT Middleware] Has Authorization header: {context.Request.Headers.ContainsKey("Authorization")}");
+            
             if (!context.Request.Headers.ContainsKey("Authorization"))
             {
                 string token = context.Request.Cookies[JwtExtensions.JWT_COOKIE_NAME];
+                Console.WriteLine($"[JWT Middleware] Cookie token found: {!string.IsNullOrEmpty(token)}");
 
                 if (token != null)
+                {
                     context.Request.Headers.Append("Authorization", "Bearer " + token);
+                    Console.WriteLine($"[JWT Middleware] Added Authorization header from cookie");
+                }
+            }
+            else
+            {
+                var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                Console.WriteLine($"[JWT Middleware] Authorization header: {authHeader?.Substring(0, Math.Min(20, authHeader?.Length ?? 0))}...");
             }
 
             await next(context);
@@ -33,7 +45,17 @@ namespace Nebula.Services.Authentication.Shared.Middleware
             var user = NebulaUserHelper.ParseUser(context);
             if (user != null)
             {
-                Console.WriteLine($"**** {user.UserName} - {string.Join(',', user.Roles)} ****");
+                Console.WriteLine($"**** User parsed successfully: {user.UserName} - {string.Join(',', user.Roles)} ****");
+            }
+            else
+            {
+                Console.WriteLine($"**** User parsing failed - no user found ****");
+                var claims = context.User.Claims.ToArray();
+                Console.WriteLine($"**** Claims count: {claims.Length} ****");
+                foreach (var claim in claims)
+                {
+                    Console.WriteLine($"**** Claim: {claim.Type} = {claim.Value} ****");
+                }
             }
         }
     }

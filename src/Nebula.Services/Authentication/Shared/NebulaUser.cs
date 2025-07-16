@@ -36,8 +36,8 @@ namespace Nebula.Services.Authentication.Shared
 
         // Claim Type Constants
         public const string IdType = "Id";
-        public const string UserNameType = "UserName";
-        public const string DisplayNameType = "DisplayName";
+        public const string UserNameType = "sub";
+        public const string DisplayNameType = "name";
         public const string IdentsType = "Idents";
         public const string RolesType = ClaimTypes.Role;
 
@@ -105,6 +105,12 @@ namespace Nebula.Services.Authentication.Shared
             if (Idents.Count != 0)
                 yield return new Claim(IdentsType, string.Join(';', Idents));
 
+            if (!string.IsNullOrWhiteSpace(UserName))
+                yield return new Claim(UserNameType, UserName);
+
+            if (!string.IsNullOrWhiteSpace(DisplayName))
+                yield return new Claim(DisplayNameType, DisplayName);
+
             foreach (var r in Roles)
                 yield return new Claim(RolesType, r);
 
@@ -119,13 +125,22 @@ namespace Nebula.Services.Authentication.Shared
 
         public static NebulaUser Parse(Claim[] claims)
         {
+            Console.WriteLine($"[NebulaUser.Parse] Parsing {claims?.Length ?? 0} claims");
             if (claims == null || claims.Length == 0)
+            {
+                Console.WriteLine("[NebulaUser.Parse] No claims provided");
                 return null;
+            }
 
             var user = new NebulaUser();
             foreach (var claim in claims)
+            {
+                Console.WriteLine($"[NebulaUser.Parse] Processing claim: {claim.Type} = {claim.Value}");
                 user.LoadClaim(claim);
+            }
 
+            Console.WriteLine($"[NebulaUser.Parse] User validation - Id: {user.Id}, Idents: {user.Idents.Count}, Roles: {user.Roles.Count}, OrgRoles: {user.OrgRoles.Count}");
+            Console.WriteLine($"[NebulaUser.Parse] IsValid: {user.IsValid}");
             return user.IsValid ? user : null;
         }
 
@@ -134,6 +149,7 @@ namespace Nebula.Services.Authentication.Shared
 
         private void LoadClaim(Claim claim)
         {
+            Console.WriteLine($"FOUND CLAIM {claim.ToString()}");
             switch (claim.Type)
             {
                 case IdType:

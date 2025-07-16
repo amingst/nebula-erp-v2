@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Accounting"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Fragments", "..\Nebula.Fragments\Nebula.Fragments.csproj", "{97F88A38-92F6-0D05-B7D9-72273742E250}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Crypto", "Crypto\Nebula.Services.Crypto.csproj", "{C67C4856-AC80-8AF3-451A-480ECE50AFCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{97F88A38-92F6-0D05-B7D9-72273742E250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97F88A38-92F6-0D05-B7D9-72273742E250}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97F88A38-92F6-0D05-B7D9-72273742E250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C67C4856-AC80-8AF3-451A-480ECE50AFCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C67C4856-AC80-8AF3-451A-480ECE50AFCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C67C4856-AC80-8AF3-451A-480ECE50AFCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C67C4856-AC80-8AF3-451A-480ECE50AFCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

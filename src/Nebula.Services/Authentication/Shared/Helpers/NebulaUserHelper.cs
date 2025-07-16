@@ -22,7 +22,8 @@ namespace Nebula.Services.Authentication.Shared.Helpers
 
         public static NebulaUser ParseUser(HttpContext context)
         {
-            var user = NebulaUser.Parse(context.User.Claims.ToArray());
+            var claims = context.User.Claims.ToArray();
+            var user = NebulaUser.Parse(claims);
             if (user != null)
                 user.JwtToken = GrabToken(context);
 

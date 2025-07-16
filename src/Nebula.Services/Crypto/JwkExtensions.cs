@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nebula.Services.Authentication.Shared.Extensions
+namespace Nebula.Services.Crypto
 {
     public static class JwkExtension
     {

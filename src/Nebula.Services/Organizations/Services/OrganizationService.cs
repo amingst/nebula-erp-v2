@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Nebula.Services.Authentication.Shared.Helpers;
 using Nebula.Services.Base.Extensions;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Nebula.Services.Organizations.Services
 {
+    [Authorize]
     public class OrganizationService : OrganizationInterface.OrganizationInterfaceBase
     {
         private readonly ILogger<OrganizationService> _logger;
@@ -33,12 +35,19 @@ namespace Nebula.Services.Organizations.Services
                 OrganizationName = request.OrganizationName,
             };
 
-            //var createdByUser = NebulaUserHelper.ParseUser(context.GetHttpContext());
-            //var createdById = createdByUser?.Id.ToString();
-            //newOrg.OwnerId = createdById;
-            //newOrg.CreatedBy = createdById;
-            //newOrg.LastModifiedBy = createdById;
-            
+            var createdByUser = NebulaUserHelper.ParseUser(context.GetHttpContext());
+            if (createdByUser == null)
+            {
+                return new CreateOrganizationResponse
+                {
+                    Error = "User not authenticated"
+                };
+            }
+            var createdById = createdByUser?.Id.ToString();
+            newOrg.OwnerId = createdById;
+            newOrg.CreatedBy = createdById;
+            newOrg.LastModifiedBy = createdById;
+
             var now = Timestamp.FromDateTime(DateTime.UtcNow);
             newOrg.CreatedUTC = now;
             newOrg.LastModifiedUTC = now;

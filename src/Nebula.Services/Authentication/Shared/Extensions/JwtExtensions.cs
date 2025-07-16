@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Nebula.Services.Authentication.Shared.Helpers;
 using Nebula.Services.Authentication.Shared.Middleware;
+using Nebula.Services.Crypto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
