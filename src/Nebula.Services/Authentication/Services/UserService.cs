@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -78,6 +79,10 @@ namespace Nebula.Services.Authentication.Services
                     UserId = Guid.NewGuid().ToString(),
                     UserName = request.UserName,
                     DisplayName = request.DisplayName ?? request.UserName,
+                    CreatedUTC = DateTime.UtcNow.ToTimestamp(),
+                    LastModifiedUTC = DateTime.UtcNow.ToTimestamp(),
+                    LastLoginUTC = DateTime.UtcNow.ToTimestamp(),
+                    DisabledUtc = new Timestamp() // Default empty timestamp
                 },
                 Private = new UserPrivateRecord
                 {

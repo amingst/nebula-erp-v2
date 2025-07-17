@@ -1,0 +1,50 @@
+services:
+    postgres:
+        image: postgres:16-alpine
+        container_name: nebula-postgres
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: nebula_erp
+            POSTGRES_USER: nebula_admin
+            POSTGRES_PASSWORD: nebula_dev_password
+            PGDATA: /var/lib/postgresql/data/pgdata
+        ports:
+            - '5432:5432'
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - ./database/init:/docker-entrypoint-initdb.d
+        networks:
+            - nebula-network
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U nebula_admin -d nebula_erp']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    pgadmin:
+        image: dpage/pgadmin4:latest
+        container_name: nebula-pgadmin
+        restart: unless-stopped
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@example.com
+            PGADMIN_DEFAULT_PASSWORD: admin123
+            PGADMIN_CONFIG_SERVER_MODE: 'False'
+        ports:
+            - '8080:80'
+        volumes:
+            - pgadmin_data:/var/lib/pgadmin
+        networks:
+            - nebula-network
+        depends_on:
+            postgres:
+                condition: service_healthy
+
+volumes:
+    postgres_data:
+        driver: local
+    pgadmin_data:
+        driver: local
+
+networks:
+    nebula-network:
+        driver: bridge

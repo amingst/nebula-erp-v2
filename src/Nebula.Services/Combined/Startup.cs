@@ -84,8 +84,8 @@ namespace Nebula.Services.Combined
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
                 
             services.AddJwtAuthentication();
-
             services.AddAuthenticationClasses();
+            services.AddAuthenticationDb(Configuration);
             services.AddAccountingClasses();
             services.AddOrganizationClasses();
             services.AddInventoryClasses();
