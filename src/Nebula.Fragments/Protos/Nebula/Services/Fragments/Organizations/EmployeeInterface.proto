@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "Protos/Nebula/Services/Fragments/Organizations/EmployeeRecord.proto";
 import "google/protobuf/timestamp.proto";
 
+// TODO: Refactor All Methods and Req/Res Definitions To OrganizationInterface
 service EmployeeInterface {
   rpc GetEmployees (GetEmployeesRequest) returns (GetEmployeesResponse) {
     option (google.api.http) = {
@@ -19,13 +20,6 @@ service EmployeeInterface {
     };
   }
 
-  rpc CreateEmployee (CreateEmployeeRequest) returns (HRMutationResponse) {
-    option (google.api.http) = {
-      post: "/api/v1/organizations/{OrganizationId}/employees"
-      body: "*"
-    };
-  }
-
   rpc UpdateEmployee (UpdateEmployeeRequest) returns (HRMutationResponse) {
     option (google.api.http) = {
       put: "/api/v1/organizations/{OrganizationId}/employees/{EmployeeId}"
@@ -35,7 +29,7 @@ service EmployeeInterface {
 
   rpc TerminateEmployee (TerminateEmployeeRequest) returns (HRMutationResponse) {
     option (google.api.http) = {
-      post: "/api/v1/organizations/employees/{EmployeeId}/terminate"
+      post: "/api/v1/organizations/{OrganizationId}/employees/{EmployeeId}/terminate"
       body: "*"
     };
   }
@@ -75,19 +69,6 @@ message TerminateEmployeeRequest {
 message DeleteEmployeeRequest {
   string OrganizationId = 1;
   string EmployeeId = 2;
-}
-
-message CreateEmployeeRequest {
-    string OrganizationId = 1;
-    string FirstName = 2;
-    string LastName = 3;
-    string Email = 4;
-    string Phone = 5;
-    string JobTitle = 6;
-    string Department = 7;
-    google.protobuf.Timestamp StartUTC = 8;
-    google.protobuf.Timestamp EndUTC = 9;
-    string ManagerId = 10;
 }
 
 message UpdateEmployeeRequest {

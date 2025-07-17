@@ -22,11 +22,6 @@ namespace Nebula.Services.HR.Services
             _employees = employees;
         }
 
-        public override Task<HRMutationResponse> CreateEmployee(CreateEmployeeRequest request, ServerCallContext context)
-        {
-            return base.CreateEmployee(request, context);
-        }
-
         public override Task<HRMutationResponse> DeleteEmployee(DeleteEmployeeRequest request, ServerCallContext context)
         {
             return base.DeleteEmployee(request, context);
@@ -37,9 +32,27 @@ namespace Nebula.Services.HR.Services
             return base.GetEmployeeById(request, context);
         }
 
-        public override Task<GetEmployeesResponse> GetEmployees(GetEmployeesRequest request, ServerCallContext context)
+        public override async Task<GetEmployeesResponse> GetEmployees(GetEmployeesRequest request, ServerCallContext context)
         {
-            return base.GetEmployees(request, context);
+            Guid.TryParse(request.OrganizationId, out var orgId);
+            if (orgId == Guid.Empty)
+            {
+               return new GetEmployeesResponse
+               {
+                   Error = "Invalid organization ID"
+               };
+            }
+
+            var res = new GetEmployeesResponse();
+
+            var employees = await _employees.GetAll(orgId).ToList();
+            if (employees != null && employees.Count > 0)
+            {
+                res.Records.AddRange(employees);
+            }
+
+            res.Error = "No Error";
+            return res;
         }
 
         public override Task<HRMutationResponse> TerminateEmployee(TerminateEmployeeRequest request, ServerCallContext context)

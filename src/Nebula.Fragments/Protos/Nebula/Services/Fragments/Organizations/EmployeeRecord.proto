@@ -16,6 +16,7 @@ message EmployeeRecord {
 	google.protobuf.Timestamp EndUTC = 10;
 	bool IsActive = 11;
 	string ManagerId = 12;
+	string UserId = 13;
 	google.protobuf.Timestamp CreatedUTC = 30;
 	string CreatedBy = 31;
 	google.protobuf.Timestamp LastModifiedUTC = 32;

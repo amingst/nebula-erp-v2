@@ -20,11 +20,13 @@ namespace Nebula.Services.Organizations.Services
     {
         private readonly ILogger<OrganizationService> _logger;
         private readonly IOrganizationRepository _organizations;
+        private readonly IEmployeeRepository _employees;
 
-        public OrganizationService(ILogger<OrganizationService> logger, IOrganizationRepository organizations)
+        public OrganizationService(ILogger<OrganizationService> logger, IOrganizationRepository organizations, IEmployeeRepository employees)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _organizations = organizations ?? throw new ArgumentNullException(nameof(organizations));
+            _employees = employees;
         }
 
         public override async Task<CreateOrganizationResponse> CreateOrganization(CreateOrganizationRequest request, ServerCallContext context)
@@ -51,14 +53,36 @@ namespace Nebula.Services.Organizations.Services
             var now = Timestamp.FromDateTime(DateTime.UtcNow);
             newOrg.CreatedUTC = now;
             newOrg.LastModifiedUTC = now;
-            //newOrg.EmployeeIds.Add(createdById);
 
-            var success = await _organizations.Create(newOrg);
+            var ownerEmployeeId = Guid.NewGuid().ToString();
+            var ownerEmployee = new EmployeeRecord()
+            {
+                EmployeeId = ownerEmployeeId,
+                OrganizationId = newOrg.OrganizationId,
+                StartUTC = now,
+                IsActive = true,
+                UserId = createdById,
+                CreatedUTC = now,
+                CreatedBy = createdById,
+                LastModifiedUTC = now,
+                LastModifiedBy = createdById,
+            };
 
-            if (!success)
+            newOrg.EmployeeIds.Add(ownerEmployee.EmployeeId);
+
+            var orgSuccess = await _organizations.Create(newOrg);
+            var employeeSuccess = await _employees.Create(ownerEmployee);
+
+            if (!orgSuccess)
                 return new CreateOrganizationResponse
                 {
                     Error = "Organization could not be created"
+                };
+
+            if (!employeeSuccess)
+                return new CreateOrganizationResponse
+                {
+                    Error = "Employee could not be created for the organization owner"
                 };
 
             return new CreateOrganizationResponse()

@@ -141,6 +141,7 @@ namespace Nebula.Services.Authentication.Shared
 
             Console.WriteLine($"[NebulaUser.Parse] User validation - Id: {user.Id}, Idents: {user.Idents.Count}, Roles: {user.Roles.Count}, OrgRoles: {user.OrgRoles.Count}");
             Console.WriteLine($"[NebulaUser.Parse] IsValid: {user.IsValid}");
+
             return user.IsValid ? user : null;
         }
 

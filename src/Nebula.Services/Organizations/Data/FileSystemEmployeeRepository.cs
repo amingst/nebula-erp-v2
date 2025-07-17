@@ -1,52 +1,100 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Google.Protobuf;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Nebula.Services.Base.Extensions;
 using Nebula.Services.Base.Models;
+using Nebula.Services.Fragments.Organizations;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Nebula.Services.Fragments.Organizations;
 
 namespace Nebula.Services.Organizations.Data
 {
     public class FileSystemEmployeeRepository : IEmployeeRepository
     {
         private readonly ILogger<FileSystemEmployeeRepository> _logger;
+        private readonly DirectoryInfo _dataDir;
 
         public FileSystemEmployeeRepository(ILogger<FileSystemEmployeeRepository> logger, IOptions<AppSettings> settings)
         {
             _logger = logger;
+
+            var root = new DirectoryInfo(settings.Value.DataStore);
+            root.Create();
+            _dataDir = root.CreateSubdirectory("organizations").CreateSubdirectory("employees").CreateSubdirectory("data");
         }
 
-        public Task<bool> Create(EmployeeRecord employee)
+        public async Task<bool> Create(EmployeeRecord employee)
         {
-            throw new NotImplementedException();
+            var organizationId = employee.OrganizationId.ToGuid();
+            var orgDir = _dataDir.CreateSubdirectory(organizationId.ToString());
+            var employeeFile = orgDir.CreateGuidFileInfo(employee.EmployeeId.ToGuid());
+
+            if (employeeFile.Exists)
+                return false;
+
+            await File.WriteAllBytesAsync(employeeFile.FullName, employee.ToByteArray());
+            return true;
         }
 
         public Task<bool> Exists(Guid organizationId, Guid employeeId)
         {
-            throw new NotImplementedException();
+            var orgDir = _dataDir.CreateSubdirectory(organizationId.ToString());
+            var employeeFile = orgDir.CreateGuidFileInfo(employeeId);
+            return Task.FromResult(employeeFile.Exists);
         }
 
-        public IAsyncEnumerable<EmployeeRecord> GetAll(Guid organizationId)
+        public async IAsyncEnumerable<EmployeeRecord> GetAll(Guid organizationId)
         {
-            throw new NotImplementedException();
+            var orgDir = _dataDir.CreateSubdirectory(organizationId.ToString());
+            foreach (var fd in GetAllDataFiles(orgDir))
+            {
+                yield return EmployeeRecord.Parser.ParseFrom(await File.ReadAllBytesAsync(fd.FullName));
+            }
         }
 
-        public IAsyncEnumerable<Guid> GetAllIds(Guid organizationId)
+        public async Task<EmployeeRecord> GetById(Guid organizationId, Guid employeeId)
         {
-            throw new NotImplementedException();
+            var orgDir = _dataDir.CreateSubdirectory(organizationId.ToString());
+            var employeeFile = orgDir.CreateGuidFileInfo(employeeId);
+
+            if (!employeeFile.Exists)
+                return null;
+
+            return EmployeeRecord.Parser.ParseFrom(await File.ReadAllBytesAsync(employeeFile.FullName));
         }
 
-        public Task<EmployeeRecord> GetById(Guid organizationId, Guid employeeId)
+        public async Task<bool> Update(EmployeeRecord employee)
         {
-            throw new NotImplementedException();
+            var organizationId = employee.OrganizationId.ToGuid();
+            var orgDir = _dataDir.CreateSubdirectory(organizationId.ToString());
+            var employeeFile = orgDir.CreateGuidFileInfo(employee.EmployeeId.ToGuid());
+
+            if (!employeeFile.Exists)
+                return false;
+
+            await File.WriteAllBytesAsync(employeeFile.FullName, employee.ToByteArray());
+            return true;
         }
 
-        public Task<bool> Update(EmployeeRecord employee)
+        public async Task<bool> Delete(Guid organizationId, Guid employeeId)
         {
-            throw new NotImplementedException();
+            var orgDir = _dataDir.CreateSubdirectory(organizationId.ToString());
+            var employeeFile = orgDir.CreateGuidFileInfo(employeeId);
+
+            if (!employeeFile.Exists)
+                return false;
+
+            employeeFile.Delete();
+            return true;
+        }
+
+        private IEnumerable<FileInfo> GetAllDataFiles(DirectoryInfo orgDir)
+        {
+            return orgDir.EnumerateFiles("*", SearchOption.AllDirectories);
         }
     }
 }

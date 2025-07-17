@@ -132,7 +132,7 @@ namespace Nebula.Services.Authentication.Services
             //    nebulaUser.ExtraClaims.AddRange(otherClaims.Select(c => new Claim(c.Name, c.Value)));
             //    nebulaUser.ExtraClaims.AddRange(otherClaims.Select(c => new Claim(c.Name + "Exp", c.ExpiresOnUTC.Seconds.ToString())));
             //}
-            //nebulaUser.OrgRoles.AddRange(user.Private.OrganizationRoles.ToList());
+
             return GenerateToken(nebulaUser);
         }
 
