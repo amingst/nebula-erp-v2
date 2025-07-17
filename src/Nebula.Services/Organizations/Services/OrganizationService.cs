@@ -124,5 +124,43 @@ namespace Nebula.Services.Organizations.Services
             res.Error = "No Error";
             return res;
         }
+
+        public override Task<GetEmployeeByIdResponse> GetEmployeeById(GetEmployeeByIdRequest request, ServerCallContext context)
+        {
+            return base.GetEmployeeById(request, context);
+        }
+
+        public override async Task<GetEmployeesResponse> GetEmployees(GetEmployeesRequest request, ServerCallContext context)
+        {
+            Guid.TryParse(request.OrganizationId, out var orgId);
+            if (orgId == Guid.Empty)
+            {
+                return new GetEmployeesResponse
+                {
+                    Error = "Invalid organization ID"
+                };
+            }
+
+            var res = new GetEmployeesResponse();
+
+            var employees = await _employees.GetAll(orgId).ToList();
+            if (employees != null && employees.Count > 0)
+            {
+                res.Records.AddRange(employees);
+            }
+
+            res.Error = "No Error";
+            return res;
+        }
+
+        public override Task<HRMutationResponse> TerminateEmployee(TerminateEmployeeRequest request, ServerCallContext context)
+        {
+            return base.TerminateEmployee(request, context);
+        }
+
+        public override Task<HRMutationResponse> UpdateEmployee(UpdateEmployeeRequest request, ServerCallContext context)
+        {
+            return base.UpdateEmployee(request, context);
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Nebula.Services.HR.Services;
 using Nebula.Services.Organizations.Data;
 using Nebula.Services.Organizations.Services;
 using System;
@@ -24,7 +23,6 @@ namespace Nebula.Services.Organizations.Extensions
         public static void MapOrganizationEndpoints(this IEndpointRouteBuilder endpoints)
         {
             endpoints.MapGrpcService<OrganizationService>();
-            endpoints.MapGrpcService<EmployeeService>();
         }
     }
 }

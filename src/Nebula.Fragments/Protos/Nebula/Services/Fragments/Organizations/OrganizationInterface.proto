@@ -3,6 +3,8 @@ syntax = "proto3";
 package Nebula.Services.Fragments.Organziations;
 import "google/api/annotations.proto";
 import "Protos/Nebula/Services/Fragments/Organizations/OrganizationRecord.proto";
+import "Protos/Nebula/Services/Fragments/Organizations/EmployeeRecord.proto";
+import "google/protobuf/timestamp.proto";
 
 service OrganizationInterface {
 	rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse) {
@@ -14,14 +16,14 @@ service OrganizationInterface {
 
 	rpc JoinOrganization (JoinOrganizationRequest) returns (JoinOrganizationResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/organizations/join"
+			post: "/api/v1/{OrganizationId}/organizations/join"
 			body: "*"
 		};
 	}
 
 	rpc LeaveOrganization (LeaveOrganizationRequest) returns (LeaveOrganizationResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/organizations/leave"
+			post: "/api/v1/organizations/{OrganizationId}/leave"
 			body: "*"
 		};
 	}
@@ -31,6 +33,32 @@ service OrganizationInterface {
 			get: "/api/v1/organizations/{OrganizationId}"
 		};
 	}
+
+	 rpc GetEmployees (GetEmployeesRequest) returns (GetEmployeesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/organizations/{OrganizationId}/employees"
+    };
+  }
+
+  rpc GetEmployeeById (GetEmployeeByIdRequest) returns (GetEmployeeByIdResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/organizations/{OrganizationId}/employees/{EmployeeId}"
+    };
+  }
+
+  rpc UpdateEmployee (UpdateEmployeeRequest) returns (HRMutationResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/organizations/{OrganizationId}/employees/{EmployeeId}"
+      body: "*"
+    };
+  }
+
+  rpc TerminateEmployee (TerminateEmployeeRequest) returns (HRMutationResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/organizations/{OrganizationId}/employees/{EmployeeId}/terminate"
+      body: "*"
+    };
+  }
 }
 
 message CreateOrganizationRequest {
@@ -65,4 +93,40 @@ message GetOrganizationRequest {
 message GetOrganizationResponse {
 	string Error = 1;
 	Nebula.Services.Fragments.Organizations.OrganizationRecord Record = 2;
+}
+
+message GetEmployeesRequest {
+  string OrganizationId = 1;
+}
+
+message GetEmployeesResponse {
+  string Error = 1;
+  repeated Nebula.Services.Fragments.Organizations.EmployeeRecord Records = 2;
+}
+
+message GetEmployeeByIdRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+}
+
+message GetEmployeeByIdResponse {
+  string Error = 1;
+  Nebula.Services.Fragments.Organizations.EmployeeRecord Record = 2;
+}
+
+message TerminateEmployeeRequest {
+  string OrganizationId = 1;
+  string EmployeeId = 2;
+  string Reason = 3;
+}
+
+message UpdateEmployeeRequest {
+    string EmployeeId = 1;
+    string OrganizationId = 2;
+    Nebula.Services.Fragments.Organizations.EmployeeRecord Record = 3;
+}
+
+message HRMutationResponse {
+  string Error = 1;
+  bool Success = 2;
 }
