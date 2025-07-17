@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Nebula.Services.Base.Models;
-using Nebula.Services.Fragments.HR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Nebula.Services.Fragments.Organizations;
 
-namespace Nebula.Services.HR.Data
+namespace Nebula.Services.Organizations.Data
 {
     public class FileSystemEmployeeRepository : IEmployeeRepository
     {

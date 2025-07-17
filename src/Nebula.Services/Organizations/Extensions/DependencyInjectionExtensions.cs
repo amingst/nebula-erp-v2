@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Nebula.Services.HR.Services;
 using Nebula.Services.Organizations.Data;
 using Nebula.Services.Organizations.Services;
 using System;
@@ -16,12 +17,14 @@ namespace Nebula.Services.Organizations.Extensions
         public static IServiceCollection AddOrganizationClasses(this IServiceCollection services)
         {
             services.AddSingleton<IOrganizationRepository, FileSystemOrganizationRepository>();
+            services.AddSingleton<IEmployeeRepository, FileSystemEmployeeRepository>();
             return services;
         }
 
         public static void MapOrganizationEndpoints(this IEndpointRouteBuilder endpoints)
         {
             endpoints.MapGrpcService<OrganizationService>();
+            endpoints.MapGrpcService<EmployeeService>();
         }
     }
 }

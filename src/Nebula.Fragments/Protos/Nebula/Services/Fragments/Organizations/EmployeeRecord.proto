@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package Nebula.Services.Fragments.HR;
+package Nebula.Services.Fragments.Organizations;
 import "google/protobuf/timestamp.proto";
 
 message EmployeeRecord {

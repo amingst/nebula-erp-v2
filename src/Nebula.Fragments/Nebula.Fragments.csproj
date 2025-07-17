@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
@@ -10,7 +10,6 @@
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\Claims.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
-    <None Remove="Protos\Nebula\Services\Fragments\HR\EmployeeRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\HR\PayrollRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\HR\TimesheetRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Inventory\BatchInterface.proto" />
@@ -26,6 +25,8 @@
     <None Remove="Protos\Nebula\Services\Fragments\Inventory\StockRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Inventory\SupplierInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Inventory\SupplierRecord.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Organizations\EmployeeInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Organizations\EmployeeRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Organizations\OrganizationInterface.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Organizations\OrganizationRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />
@@ -52,8 +53,6 @@
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Authentication\UserRecord.proto" />
 	  <Protobuf Include="Protos\Nebula\Services\Fragments\Accounting\TransactionRecord.proto" />
-    <Protobuf Include="Protos\Nebula\Services\Fragments\HR\EmployeeRecord.proto" />
-    <Protobuf Include="Protos\Nebula\Services\Fragments\HR\EmployeeInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\HR\PayrollRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\HR\PayrollInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\HR\TimesheetRecord.proto" />
@@ -71,6 +70,8 @@
     <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\StockRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\SupplierInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\SupplierRecord.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\EmployeeInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\EmployeeRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\OrganizationInterface.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\OrganizationRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />

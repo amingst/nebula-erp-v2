@@ -1,11 +1,11 @@
-﻿using Nebula.Services.Fragments.HR;
+﻿using Nebula.Services.Fragments.Organizations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nebula.Services.HR.Data
+namespace Nebula.Services.Organizations.Data
 {
     public interface IEmployeeRepository
     {

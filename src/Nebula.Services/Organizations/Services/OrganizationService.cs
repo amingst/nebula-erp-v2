@@ -52,6 +52,7 @@ namespace Nebula.Services.Organizations.Services
             newOrg.CreatedUTC = now;
             newOrg.LastModifiedUTC = now;
             //newOrg.EmployeeIds.Add(createdById);
+
             var success = await _organizations.Create(newOrg);
 
             if (!success)

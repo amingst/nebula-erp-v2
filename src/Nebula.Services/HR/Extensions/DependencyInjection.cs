@@ -14,7 +14,6 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddHRClasses(this IServiceCollection services)
         {
-            services.AddSingleton<IEmployeeRepository, FileSystemEmployeeRepository>();
             services.AddSingleton<IPayrollRepository, FileSystemPayrollRepository>();
             services.AddSingleton<ITimesheetRepository, FileSystemTimesheetRepository>();
             return services;
@@ -22,7 +21,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void MapHREndpoints(this IEndpointRouteBuilder endpoints)
         {
-            endpoints.MapGrpcService<EmployeeService>();
             endpoints.MapGrpcService<PayrollService>();
             endpoints.MapGrpcService<TimesheetService>();
         }
