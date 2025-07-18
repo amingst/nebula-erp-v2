@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Nebula.Services.Authentication.Services.Data;
 using Nebula.Services.Authentication.Shared;
 using Nebula.Services.Authentication.Shared.Extensions;
+using Nebula.Services.Authentication.Shared.Helpers;
 using Nebula.Services.Fragments.Authentication;
 using System;
 using System.Collections.Generic;
@@ -118,6 +119,29 @@ namespace Nebula.Services.Authentication.Services
                 Error = "No Error",
                 Token = token
             };
+        }
+
+        public override async Task<GetOwnUserResponse> GetOwnUser(GetOwnUserRequest request, ServerCallContext context)
+        {
+            var res = new GetOwnUserResponse();
+
+            var ownUser = NebulaUserHelper.ParseUser(context.GetHttpContext());
+            if (ownUser == null)
+            {
+                res.Error = "User not authenticated";
+                return res;
+            }
+
+            var user = await _users.GetById(ownUser.Id);
+            if (user == null)
+            {
+                res.Error = "User not found";
+                return res;
+            }
+
+            res.Record = user;
+            res.Error = "No Error";
+            return res;
         }
 
         private string GenerateToken(UserFullRecord user)

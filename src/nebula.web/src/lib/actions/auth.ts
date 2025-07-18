@@ -1,5 +1,6 @@
 'use server';
-
+import { GetOwnUserRequest, GetOwnUserResponse } from '@/lib/protos/Protos/Nebula/Services/Fragments/Authentication/UserInterface_pb';
+import { cookies } from 'next/headers';
 import { createPromiseClient } from '@bufbuild/connect';
 import { transport } from '@/lib/connect-client';
 import { UserInterface } from '@/lib/protos/Protos/Nebula/Services/Fragments/Authentication/UserInterface_connect';
@@ -8,6 +9,24 @@ import {
 	AuthenticateUserResponse,
 	RegisterUserRequest,
 } from '@/lib/protos/Protos/Nebula/Services/Fragments/Authentication/UserInterface_pb';
+
+
+export async function getOwnUser(): Promise<GetOwnUserResponse> {
+  try {
+	const token = await (await cookies()).get('auth-token')?.value;
+	const client = createPromiseClient(UserInterface, transport);
+	const request = new GetOwnUserRequest();
+	const response = await client.getOwnUser(request, {
+	  headers: { Authorization: `Bearer ${token}` },
+	});
+	return response;
+  } catch (error) {
+	console.error('Error fetching own user:', error);
+	return new GetOwnUserResponse({
+	  Error: 'Something went wrong while fetching user data',
+	});
+  }
+}
 
 export async function loginUser(
 	username: string,

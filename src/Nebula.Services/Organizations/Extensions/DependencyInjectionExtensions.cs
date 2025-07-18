@@ -27,6 +27,7 @@ namespace Nebula.Services.Organizations.Extensions
         {
             services.AddScoped<IOrganizationRepository, PostgresOrganizationRepository>();
             services.AddScoped<IEmployeeRepository, PostgresEmployeeRepository>();
+            services.AddScoped<IOrganizationInviteRepository, PostgresOrganizationInviteRepository>();
             services.AddDbContext<OrganizationsDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("OrganizationDatabase")));
 

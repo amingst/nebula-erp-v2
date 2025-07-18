@@ -1,6 +1,6 @@
-'use client';
+'use server';
 
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { Separator } from '@/components/ui/separator';
@@ -14,6 +14,10 @@ import {
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { ModeToggle } from '@/components/mode-toggle';
+import { redirect } from 'next/navigation';
+import { getOwnUser } from '@/lib/actions/auth';
+import { getOrganizationsForUser } from '@/lib/actions/orgs';
+import { GalleryVerticalEnd } from 'lucide-react';
 
 interface DashboardLayoutProps {
 	children: React.ReactNode;
@@ -24,12 +28,12 @@ interface DashboardLayoutProps {
 	title?: string;
 }
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
 	children,
 	breadcrumbs = [],
 	title,
 }: DashboardLayoutProps) {
-	const router = useRouter();
+	//const router = useRouter();
 
 	const handleLogout = () => {
 		// Clear localStorage
@@ -40,16 +44,36 @@ export default function DashboardLayout({
 			'auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 
 		// Redirect to login
-		router.push('/login');
+		return redirect('/login');
 	};
 
+	const { Record: user } = await getOwnUser();
+	if (!user) {
+		return redirect('/login');
+	}
+
+	const { Records: organizations } = await getOrganizationsForUser();
 	return (
 		<SidebarProvider>
-			<AppSidebar />
+			<AppSidebar
+				user={{
+					name: user.Public.UserName,
+					email: user.Private.Email,
+					avatar: '',
+				}}
+				teams={organizations.map((org) => ({
+					name: org.OrganizationName,
+					logo: undefined,
+					plan: 'enterprise',
+				}))}
+			/>
 			<main className='flex flex-1 flex-col'>
 				<header className='sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 bg-background px-4 border-b'>
 					<SidebarTrigger className='-ml-1' />
-					<Separator orientation='vertical' className='mr-2 h-4' />
+					<Separator
+						orientation='vertical'
+						className='mr-2 h-4'
+					/>
 
 					<div className='flex items-center justify-between w-full'>
 						<div className='flex items-center gap-2'>
@@ -97,7 +121,6 @@ export default function DashboardLayout({
 							<Button
 								variant='outline'
 								size='sm'
-								onClick={handleLogout}
 							>
 								Logout
 							</Button>

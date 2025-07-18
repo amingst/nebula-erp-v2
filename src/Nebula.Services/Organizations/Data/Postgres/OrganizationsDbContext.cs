@@ -14,6 +14,7 @@ namespace Nebula.Services.Organizations.Data.Postgres
         // DbSets for your entities
         public DbSet<OrganizationEntity> Organizations { get; set; }
         public DbSet<EmployeeEntity> Employees { get; set; }
+        public DbSet<OrganizationInviteEntity> OrganizationInvites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -80,6 +81,19 @@ namespace Nebula.Services.Organizations.Data.Postgres
                 entity.HasIndex(e => e.ManagerId);
                 entity.HasIndex(e => e.UserId);
                 entity.HasIndex(e => e.Email).IsUnique();
+            });
+
+            modelBuilder.Entity<OrganizationInviteEntity>(entity =>
+            {
+                entity.HasKey(e => e.InviteId);
+                entity.Property(e => e.UserId).IsRequired();
+                entity.Property(e => e.OrganizationId).IsRequired();
+                entity.Property(e => e.InvitedBy).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.ValidUntilUtc).IsRequired();
+                entity.Property(e => e.UsedUtc).IsRequired();
+                // Configure indexes for invites
+                entity.HasIndex(i => i.UserId);
+                entity.HasIndex(i => i.OrganizationId);
             });
         }
     }

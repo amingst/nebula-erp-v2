@@ -27,6 +27,7 @@
     <None Remove="Protos\Nebula\Services\Fragments\Inventory\SupplierRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Organizations\EmployeeRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Organizations\OrganizationInterface.proto" />
+    <None Remove="Protos\Nebula\Services\Fragments\Organizations\OrganizationInviteRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Organizations\OrganizationRecord.proto" />
     <None Remove="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />
   </ItemGroup>
@@ -71,6 +72,7 @@
     <Protobuf Include="Protos\Nebula\Services\Fragments\Inventory\SupplierRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\EmployeeRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\OrganizationInterface.proto" />
+    <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\OrganizationInviteRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Organizations\OrganizationRecord.proto" />
     <Protobuf Include="Protos\Nebula\Services\Fragments\Shared\OrganizationRoleAssignment.proto" />
   </ItemGroup>

@@ -4,12 +4,20 @@ package Nebula.Services.Fragments.Organziations;
 import "google/api/annotations.proto";
 import "Protos/Nebula/Services/Fragments/Organizations/OrganizationRecord.proto";
 import "Protos/Nebula/Services/Fragments/Organizations/EmployeeRecord.proto";
+import "Protos/Nebula/Services/Fragments/Organizations/OrganizationInviteRecord.proto";
 import "google/protobuf/timestamp.proto";
 
 service OrganizationInterface {
 	rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse) {
 		option (google.api.http) = {
 			post: "/api/v1/organizations"
+			body: "*"
+		};
+	}
+
+	rpc InviteUser (InviteUserRequest) returns (InviteUserResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/organizations/{OrganizationId}/invite"
 			body: "*"
 		};
 	}
@@ -25,6 +33,12 @@ service OrganizationInterface {
 		option (google.api.http) = {
 			post: "/api/v1/organizations/{OrganizationId}/leave"
 			body: "*"
+		};
+	}
+
+	rpc GetOrganizationsForUser (GetOrganizationsForUserRequest) returns (GetOrganizationsForUserResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/organizations/for-user/{UserId}"
 		};
 	}
 
@@ -70,8 +84,20 @@ message CreateOrganizationResponse {
 	Nebula.Services.Fragments.Organizations.OrganizationRecord Record = 2;
 }
 
+message InviteUserRequest {
+	string UserId = 1;
+	string OrganizationId = 2;
+	google.protobuf.Timestamp ValidUntilUTC = 3;
+}
+
+message InviteUserResponse {
+	string Error = 1;
+	Nebula.Services.Fragments.Organizations.OrganizationInviteRecord Record = 2;
+}
+
+
 message JoinOrganizationRequest {
-	string OrganizationId = 1;
+	string InviteId = 1;
 }
 
 message JoinOrganizationResponse {
@@ -84,6 +110,15 @@ message LeaveOrganizationRequest {
 
 message LeaveOrganizationResponse {
 	string Error = 1;
+}
+
+message GetOrganizationsForUserRequest {
+	string UserId = 1;
+}
+
+message GetOrganizationsForUserResponse {
+	string Error = 1;
+	repeated Nebula.Services.Fragments.Organizations.OrganizationRecord Records = 2;
 }
 
 message GetOrganizationRequest {

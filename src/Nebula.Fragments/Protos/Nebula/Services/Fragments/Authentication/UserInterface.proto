@@ -2,6 +2,7 @@
 
 package Nebula.Services.Fragments.Authentication;
 import "google/api/annotations.proto";
+import "Protos/Nebula/Services/Fragments/Authentication/UserRecord.proto";
 
 service UserInterface {
 	rpc RegisterUser (RegisterUserRequest) returns (AuthenticateUserResponse) {
@@ -14,6 +15,11 @@ service UserInterface {
 		option (google.api.http) = {
 			post: "/api/v1/auth/login"
 			body: "*"
+		};
+	}
+	rpc GetOwnUser (GetOwnUserRequest) returns (GetOwnUserResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/auth/me"
 		};
 	}
 }
@@ -35,4 +41,11 @@ message AutheticateUserRequest {
 message AuthenticateUserResponse {
 	string Error = 1;
 	string Token = 2;
+}
+
+message GetOwnUserRequest {}
+
+message GetOwnUserResponse {
+	string Error = 1;
+	Nebula.Services.Fragments.Authentication.UserFullRecord Record = 2;
 }

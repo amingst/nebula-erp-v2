@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package Nebula.Services.Fragments.Organizations;
+import "google/protobuf/timestamp.proto";
+
+message OrganizationInviteRecord {
+	string InviteId = 1;
+	string UserId = 2;
+	string OrganizationId = 3;
+	google.protobuf.Timestamp InvitedUTC = 4;
+	string InvitedBy = 5;
+	google.protobuf.Timestamp ValidUntilUTC = 6;
+	google.protobuf.Timestamp UsedUTC = 7;
+}

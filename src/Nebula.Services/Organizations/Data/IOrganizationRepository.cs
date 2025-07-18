@@ -15,5 +15,6 @@ namespace Nebula.Services.Organizations.Data
         Task<bool> Delete(Guid organizationId);
         Task<Guid[]> GetAllOrganizationIds();
         IAsyncEnumerable<OrganizationRecord> GetAll();
+        Task<bool> Update(OrganizationRecord organization);
     }
 }

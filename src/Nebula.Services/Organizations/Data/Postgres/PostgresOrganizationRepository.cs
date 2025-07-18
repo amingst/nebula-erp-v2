@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Nebula.Services.Base.Extensions;
 using Nebula.Services.Fragments.Organizations;
 using System;
 using System.Collections.Generic;
@@ -114,6 +115,26 @@ namespace Nebula.Services.Organizations.Data.Postgres
             {
                 _logger.LogError(ex, "Failed to get organization by ID {OrganizationId}", organizationId);
                 return null;
+            }
+        }
+
+        public async Task<bool> Update(OrganizationRecord organization)
+        {
+            try
+            {
+                var entity = organization.ToEntity();
+
+                if (entity == null)
+                    return false;
+
+                 _context.Organizations.Update(entity);
+                var result = await _context.SaveChangesAsync();
+                return result > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update organization {OrganizationId}", organization.OrganizationId);
+                return false;
             }
         }
     }

@@ -72,6 +72,11 @@ namespace Nebula.Services.Organizations.Data
             return OrganizationRecord.Parser.ParseFrom(await File.ReadAllBytesAsync(fd.FullName));
         }
 
+        public Task<bool> Update(OrganizationRecord organization)
+        {
+            throw new NotImplementedException();
+        }
+
         private IEnumerable<FileInfo> GetAllDataFiles()
         {
             return _dataDir.EnumerateFiles("*", SearchOption.AllDirectories);
