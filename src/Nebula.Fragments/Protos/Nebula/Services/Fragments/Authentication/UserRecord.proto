@@ -8,12 +8,14 @@ message UserPublicRecord {
 	string UserId = 1;
 	string UserName = 2;
 	string DisplayName = 3;
-	repeated string Identites = 4;
+	string FirstName = 4;
+	string LastName = 5;
+	repeated string Identites = 6;
 
-	google.protobuf.Timestamp CreatedUTC = 5;
-	google.protobuf.Timestamp LastModifiedUTC = 6;
-	google.protobuf.Timestamp LastLoginUTC = 7;
-	google.protobuf.Timestamp DisabledUtc = 8;
+	google.protobuf.Timestamp CreatedUTC = 7;
+	google.protobuf.Timestamp LastModifiedUTC = 8;
+	google.protobuf.Timestamp LastLoginUTC = 9;
+	google.protobuf.Timestamp DisabledUtc = 10;
 }
 
 message UserPrivateRecord {

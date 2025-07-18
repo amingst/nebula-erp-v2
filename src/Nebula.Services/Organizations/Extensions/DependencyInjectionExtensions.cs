@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nebula.Services.Organizations.Data;
+using Nebula.Services.Organizations.Data.Postgres;
 using Nebula.Services.Organizations.Services;
 using System;
 using System.Collections.Generic;
@@ -15,8 +18,19 @@ namespace Nebula.Services.Organizations.Extensions
     {
         public static IServiceCollection AddOrganizationClasses(this IServiceCollection services)
         {
-            services.AddSingleton<IOrganizationRepository, FileSystemOrganizationRepository>();
-            services.AddSingleton<IEmployeeRepository, FileSystemEmployeeRepository>();
+            //services.AddSingleton<IOrganizationRepository, FileSystemOrganizationRepository>();
+            //services.AddSingleton<IEmployeeRepository, FileSystemEmployeeRepository>();
+            return services;
+        }
+
+        public static IServiceCollection AddOrganizationsDb(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IOrganizationRepository, PostgresOrganizationRepository>();
+            services.AddScoped<IEmployeeRepository, PostgresEmployeeRepository>();
+            services.AddDbContext<OrganizationsDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("OrganizationDatabase")));
+
+
             return services;
         }
 

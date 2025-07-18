@@ -38,6 +38,8 @@ namespace Nebula.Services.Authentication.Shared
         public const string IdType = "Id";
         public const string UserNameType = "sub";
         public const string DisplayNameType = "name";
+        public const string FirstNameType = "givenname";
+        public const string LastNameType = "surname";
         public const string IdentsType = "Idents";
         public const string RolesType = ClaimTypes.Role;
 
@@ -45,6 +47,8 @@ namespace Nebula.Services.Authentication.Shared
         public Guid Id { get; set; } = Guid.Empty;
         public string UserName { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
         public List<string> Idents { get; private set; } = new();
         public List<string> Roles { get; private set; } = new(); // Global roles only
         public Dictionary<Guid, List<string>> OrgRoles { get; private set; } = new(); // Scoped org roles
@@ -111,6 +115,12 @@ namespace Nebula.Services.Authentication.Shared
             if (!string.IsNullOrWhiteSpace(DisplayName))
                 yield return new Claim(DisplayNameType, DisplayName);
 
+            if (!string.IsNullOrWhiteSpace(FirstName))
+                yield return new Claim(FirstNameType, FirstName);
+
+            if (!string.IsNullOrWhiteSpace(LastName))
+                yield return new Claim(LastNameType, LastName);
+
             foreach (var r in Roles)
                 yield return new Claim(RolesType, r);
 
@@ -140,6 +150,7 @@ namespace Nebula.Services.Authentication.Shared
             }
 
             Console.WriteLine($"[NebulaUser.Parse] User validation - Id: {user.Id}, Idents: {user.Idents.Count}, Roles: {user.Roles.Count}, OrgRoles: {user.OrgRoles.Count}");
+            Console.WriteLine($"[NebulaUser.Parse] FirstName: '{user.FirstName}', LastName: '{user.LastName}'");
             Console.WriteLine($"[NebulaUser.Parse] IsValid: {user.IsValid}");
 
             return user.IsValid ? user : null;
@@ -162,6 +173,14 @@ namespace Nebula.Services.Authentication.Shared
                     break;
                 case DisplayNameType:
                     DisplayName = claim.Value;
+                    break;
+                case FirstNameType:
+                    Console.WriteLine($"[LoadClaim] Setting FirstName to: {claim.Value}");
+                    FirstName = claim.Value;
+                    break;
+                case LastNameType:
+                    Console.WriteLine($"[LoadClaim] Setting LastName to: {claim.Value}");
+                    LastName = claim.Value;
                     break;
                 case IdentsType:
                     Idents = claim.Value.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList();

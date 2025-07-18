@@ -22,7 +22,9 @@ message RegisterUserRequest {
 	string UserName = 1;
 	string Email = 2;
 	string DisplayName = 3;
-	string Password = 4;
+	string FirstName = 4;
+	string LastName = 5;
+	string Password = 6;
 }
 
 message AutheticateUserRequest {

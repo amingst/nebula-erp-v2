@@ -26,6 +26,12 @@ namespace Nebula.Services.Authentication.Services.Data.Postgres
         [MaxLength(100)]
         public string DisplayName { get; set; }
 
+        [MaxLength(100)]
+        public string FirstName { get; set; }
+
+        [MaxLength(100)]
+        public string LastName { get; set; }
+
         [Required]
         public byte[] PasswordHash { get; set; }
 

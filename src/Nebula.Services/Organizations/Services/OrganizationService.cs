@@ -59,6 +59,9 @@ namespace Nebula.Services.Organizations.Services
             {
                 EmployeeId = ownerEmployeeId,
                 OrganizationId = newOrg.OrganizationId,
+                FirstName = createdByUser.FirstName,
+                LastName = createdByUser.LastName,
+                Email = "", // Could be extracted from user claims if needed
                 StartUTC = now,
                 IsActive = true,
                 UserId = createdById,

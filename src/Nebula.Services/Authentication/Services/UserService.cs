@@ -79,6 +79,8 @@ namespace Nebula.Services.Authentication.Services
                     UserId = Guid.NewGuid().ToString(),
                     UserName = request.UserName,
                     DisplayName = request.DisplayName ?? request.UserName,
+                    FirstName = request.FirstName ?? string.Empty,
+                    LastName = request.LastName ?? string.Empty,
                     CreatedUTC = DateTime.UtcNow.ToTimestamp(),
                     LastModifiedUTC = DateTime.UtcNow.ToTimestamp(),
                     LastLoginUTC = DateTime.UtcNow.ToTimestamp(),
@@ -127,6 +129,8 @@ namespace Nebula.Services.Authentication.Services
                 Id = Guid.Parse(user.Public.UserId),
                 UserName = user.Public.UserName,
                 DisplayName = user.Public.DisplayName,
+                FirstName = user.Public.FirstName,
+                LastName = user.Public.LastName,
             };
 
             nebulaUser.Idents.AddRange(user.Public.Identites.ToList());

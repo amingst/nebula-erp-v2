@@ -88,6 +88,7 @@ namespace Nebula.Services.Combined
             services.AddAuthenticationDb(Configuration);
             services.AddAccountingClasses();
             services.AddOrganizationClasses();
+            services.AddOrganizationsDb(Configuration);  // Add this line for PostgreSQL repositories
             services.AddInventoryClasses();
             services.AddHRClasses();
         }
