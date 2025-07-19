@@ -86,11 +86,8 @@ namespace Nebula.Services.Combined
             services.AddJwtAuthentication();
             services.AddAuthenticationClasses();
             services.AddAuthenticationDb(Configuration);
-            services.AddAccountingClasses();
             services.AddOrganizationClasses();
-            services.AddOrganizationsDb(Configuration);  // Add this line for PostgreSQL repositories
-            services.AddInventoryClasses();
-            services.AddHRClasses();
+            services.AddOrganizationsDb(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -120,9 +117,6 @@ namespace Nebula.Services.Combined
             {
                 endpoints.MapAuthenticationEndpoints();
                 endpoints.MapOrganizationEndpoints();
-                endpoints.MapAccountingEndpoints();
-                endpoints.MapInventoryEndpoints();
-                endpoints.MapHREndpoints();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"

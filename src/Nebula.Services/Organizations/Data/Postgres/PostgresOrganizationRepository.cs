@@ -13,12 +13,12 @@ namespace Nebula.Services.Organizations.Data.Postgres
     public class PostgresOrganizationRepository : IOrganizationRepository
     {
         private readonly ILogger<PostgresOrganizationRepository> _logger;
-        private readonly OrganizationsDbContext _context;
+        private readonly DbSet<OrganizationEntity> _organizations;
 
         public PostgresOrganizationRepository(ILogger<PostgresOrganizationRepository> logger, OrganizationsDbContext dbContext)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _context = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _organizations = dbContext.Organizations ?? throw new ArgumentNullException(nameof(dbContext.Organizations));
         }
 
         public async Task<bool> Create(OrganizationRecord organization)
@@ -26,9 +26,8 @@ namespace Nebula.Services.Organizations.Data.Postgres
             try
             {
                 var entity = organization.ToEntity();
-                _context.Organizations.Add(entity);
-                var result = await _context.SaveChangesAsync();
-                return result > 0;
+                _organizations.Add(entity);
+                return true;
             }
             catch (Exception ex)
             {
@@ -41,15 +40,14 @@ namespace Nebula.Services.Organizations.Data.Postgres
         {
             try
             {
-                var entity = await _context.Organizations.FindAsync(organizationId);
+                var entity = await _organizations.FindAsync(organizationId);
                 if (entity == null) return false;
 
                 // Soft delete
                 entity.IsActive = false;
                 entity.DisabledUtc = DateTime.UtcNow;
-                
-                var result = await _context.SaveChangesAsync();
-                return result > 0;
+                _organizations.Update(entity);
+                return true;
             }
             catch (Exception ex)
             {
@@ -62,7 +60,7 @@ namespace Nebula.Services.Organizations.Data.Postgres
         {
             try
             {
-                return await _context.Organizations
+                return await _organizations
                     .Where(o => o.OrganizationId == organizationId && o.IsActive)
                     .AnyAsync();
             }
@@ -75,7 +73,7 @@ namespace Nebula.Services.Organizations.Data.Postgres
 
         public async IAsyncEnumerable<OrganizationRecord> GetAll()
         {
-            var organizations = _context.Organizations
+            var organizations = _organizations
                 .Where(o => o.IsActive)
                 .AsAsyncEnumerable();
 
@@ -89,7 +87,7 @@ namespace Nebula.Services.Organizations.Data.Postgres
         {
             try
             {
-                return await _context.Organizations
+                return await _organizations
                     .Where(o => o.IsActive)
                     .Select(o => o.OrganizationId)
                     .ToArrayAsync();
@@ -105,7 +103,7 @@ namespace Nebula.Services.Organizations.Data.Postgres
         {
             try
             {
-                var entity = await _context.Organizations
+                var entity = await _organizations
                     .Where(o => o.OrganizationId == organizationId && o.IsActive)
                     .FirstOrDefaultAsync();
 
@@ -127,9 +125,8 @@ namespace Nebula.Services.Organizations.Data.Postgres
                 if (entity == null)
                     return false;
 
-                 _context.Organizations.Update(entity);
-                var result = await _context.SaveChangesAsync();
-                return result > 0;
+                 _organizations.Update(entity);
+                return true;
             }
             catch (Exception ex)
             {

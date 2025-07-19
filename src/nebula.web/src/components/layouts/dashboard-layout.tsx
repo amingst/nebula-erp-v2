@@ -53,6 +53,15 @@ export default async function DashboardLayout({
 	}
 
 	const { Records: organizations } = await getOrganizationsForUser();
+	const teams =
+		organizations.length > 0
+			? organizations.map((org) => ({
+					name: org.OrganizationName,
+					logo: undefined,
+					plan: 'enterprise',
+			  }))
+			: [];
+
 	return (
 		<SidebarProvider>
 			<AppSidebar
@@ -61,19 +70,12 @@ export default async function DashboardLayout({
 					email: user.Private.Email,
 					avatar: '',
 				}}
-				teams={organizations.map((org) => ({
-					name: org.OrganizationName,
-					logo: undefined,
-					plan: 'enterprise',
-				}))}
+				teams={teams}
 			/>
 			<main className='flex flex-1 flex-col'>
 				<header className='sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 bg-background px-4 border-b'>
 					<SidebarTrigger className='-ml-1' />
-					<Separator
-						orientation='vertical'
-						className='mr-2 h-4'
-					/>
+					<Separator orientation='vertical' className='mr-2 h-4' />
 
 					<div className='flex items-center justify-between w-full'>
 						<div className='flex items-center gap-2'>
@@ -118,10 +120,7 @@ export default async function DashboardLayout({
 
 						<div className='flex items-center gap-2'>
 							<ModeToggle />
-							<Button
-								variant='outline'
-								size='sm'
-							>
+							<Button variant='outline' size='sm'>
 								Logout
 							</Button>
 						</div>

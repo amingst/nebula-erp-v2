@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { MultiStepForm, Step } from '@/components/ui/multi-step-form';
 import { User } from 'lucide-react';
+import { createOrganization } from '@/lib/actions/orgs';
+import { CreateOrganizationResponse } from '@/lib/protos/Protos/Nebula/Services/Fragments/Organizations/OrganizationInterface_pb';
 // import your gRPC or API action here
 // import { createOrganization } from '@/lib/actions/organization';
 
@@ -80,17 +82,15 @@ export function OrganizationForm({
 		setLoading(true);
 		setError('');
 		try {
-			// Replace with your actual gRPC/API call
-			// const response = await createOrganization({ OrganizationName: data.organizationName });
-			// if (response.success) {
-			//   router.push('/dashboard/organizations');
-			// } else {
-			//   setError(response.error || 'Failed to create organization');
-			//   throw new Error(response.error || 'Failed to create organization');
-			// }
-			// Demo: simulate success
+			const response = await createOrganization(data.organizationName);
+			if (response.error && response.error !== 'No Error') {
+				setError(response.error);
+				throw new Error(response.error);
+			} else {
+				router.push('/dashboard/');
+			}
 			setTimeout(() => {
-				router.push('/dashboard/organizations');
+				router.push('/dashboard/dashboard');
 			}, 800);
 		} catch (error) {
 			const errorMessage =

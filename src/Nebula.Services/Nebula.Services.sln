@@ -15,12 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Base", "Bas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Organizations", "Organizations\Nebula.Services.Organizations.csproj", "{41E701DE-164F-D192-0820-2E43B0C3DDE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Inventory", "Inventory\Nebula.Services.Inventory.csproj", "{9158326C-8BBF-3815-692B-1296AA36A51D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.HR", "HR\Nebula.Services.HR.csproj", "{63D1E907-6EDC-45FC-C388-C7999BEAEAE9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Accounting", "Accounting\Nebula.Services.Accounting.csproj", "{0EE04309-B49A-2071-7FE9-B3963A23CFB8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Fragments", "..\Nebula.Fragments\Nebula.Fragments.csproj", "{97F88A38-92F6-0D05-B7D9-72273742E250}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Services.Crypto", "Crypto\Nebula.Services.Crypto.csproj", "{C67C4856-AC80-8AF3-451A-480ECE50AFCF}"
@@ -51,18 +45,6 @@ Global
 		{41E701DE-164F-D192-0820-2E43B0C3DDE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41E701DE-164F-D192-0820-2E43B0C3DDE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41E701DE-164F-D192-0820-2E43B0C3DDE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9158326C-8BBF-3815-692B-1296AA36A51D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9158326C-8BBF-3815-692B-1296AA36A51D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9158326C-8BBF-3815-692B-1296AA36A51D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9158326C-8BBF-3815-692B-1296AA36A51D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{63D1E907-6EDC-45FC-C388-C7999BEAEAE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63D1E907-6EDC-45FC-C388-C7999BEAEAE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63D1E907-6EDC-45FC-C388-C7999BEAEAE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63D1E907-6EDC-45FC-C388-C7999BEAEAE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0EE04309-B49A-2071-7FE9-B3963A23CFB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EE04309-B49A-2071-7FE9-B3963A23CFB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EE04309-B49A-2071-7FE9-B3963A23CFB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EE04309-B49A-2071-7FE9-B3963A23CFB8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{97F88A38-92F6-0D05-B7D9-72273742E250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{97F88A38-92F6-0D05-B7D9-72273742E250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97F88A38-92F6-0D05-B7D9-72273742E250}.Release|Any CPU.ActiveCfg = Release|Any CPU

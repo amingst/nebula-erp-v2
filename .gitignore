@@ -407,6 +407,7 @@ src/Nebula.Fragments/ts-gen/gen/
 src/Nebula.Fragments/ts-gen/node_modules/
 src/Nebula.Fragments/ts-gen/package-lock.json
 src/Nebula.Fragments/ts-gen/dist/
+src/Nebula.Fragments/ts-gen/index.ts
 
 # Copied protobuf files in nebula.web
 src/nebula.web/src/lib/protos/
@@ -415,3 +416,4 @@ src/nebula.web/src/lib/protos/
 **/*_pb.ts
 **/*_connect.ts
 **/gen/**/*.ts
+src/Nebula.Fragments/ts-gen/index.ts

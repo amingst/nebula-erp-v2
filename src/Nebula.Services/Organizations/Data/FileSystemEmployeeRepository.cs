@@ -96,5 +96,10 @@ namespace Nebula.Services.Organizations.Data
         {
             return orgDir.EnumerateFiles("*", SearchOption.AllDirectories);
         }
+
+        public Task<EmployeeRecord> GetByUserId(Guid organizationId, Guid userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

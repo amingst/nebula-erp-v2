@@ -60,6 +60,12 @@ service OrganizationInterface {
     };
   }
 
+  rpc GetOwnEmployee (GetOwnEmployeeRequest) returns (GetOwnEmployeeResponse) {
+	option (google.api.http) = {
+	  get: "/api/v1/organizations/{OrganizationId}/employees/me"
+	};
+  }
+
   rpc UpdateEmployee (UpdateEmployeeRequest) returns (HRMutationResponse) {
     option (google.api.http) = {
       put: "/api/v1/organizations/{OrganizationId}/employees/{EmployeeId}"
@@ -98,6 +104,7 @@ message InviteUserResponse {
 
 message JoinOrganizationRequest {
 	string InviteId = 1;
+	string OrganizationId = 2;
 }
 
 message JoinOrganizationResponse {
@@ -147,6 +154,15 @@ message GetEmployeeByIdRequest {
 message GetEmployeeByIdResponse {
   string Error = 1;
   Nebula.Services.Fragments.Organizations.EmployeeRecord Record = 2;
+}
+
+message GetOwnEmployeeRequest {
+	string OrganizationId = 1;
+}
+
+message GetOwnEmployeeResponse {
+	string Error = 1;
+	Nebula.Services.Fragments.Organizations.EmployeeRecord Record = 2;
 }
 
 message TerminateEmployeeRequest {

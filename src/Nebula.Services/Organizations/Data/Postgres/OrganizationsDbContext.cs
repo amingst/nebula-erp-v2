@@ -80,7 +80,7 @@ namespace Nebula.Services.Organizations.Data.Postgres
                 entity.HasIndex(e => e.OrganizationId);
                 entity.HasIndex(e => e.ManagerId);
                 entity.HasIndex(e => e.UserId);
-                entity.HasIndex(e => e.Email).IsUnique();
+                entity.HasIndex(e => e.Email);
             });
 
             modelBuilder.Entity<OrganizationInviteEntity>(entity =>

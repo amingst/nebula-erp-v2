@@ -13,12 +13,12 @@ namespace Nebula.Services.Organizations.Data.Postgres
     public class PostgresEmployeeRepository : IEmployeeRepository
     {
         private readonly ILogger<PostgresEmployeeRepository> _logger;
-        private readonly OrganizationsDbContext _context;
+        private readonly DbSet<EmployeeEntity> _employees;
 
         public PostgresEmployeeRepository(ILogger<PostgresEmployeeRepository> logger, OrganizationsDbContext dbContext)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _context = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _employees = dbContext.Employees ?? throw new ArgumentNullException(nameof(dbContext.Employees));
         }
 
         public async Task<bool> Create(EmployeeRecord employee)
@@ -26,9 +26,8 @@ namespace Nebula.Services.Organizations.Data.Postgres
             try
             {
                 var entity = employee.ToEntity();
-                _context.Employees.Add(entity);
-                var result = await _context.SaveChangesAsync();
-                return result > 0;
+                _employees.Add(entity);
+                return true;
             }
             catch (Exception ex)
             {
@@ -41,7 +40,7 @@ namespace Nebula.Services.Organizations.Data.Postgres
         {
             try
             {
-                return await _context.Employees
+                return await _employees
                     .Where(e => e.OrganizationId == organizationId && e.Id == employeeId && e.IsActive)
                     .AnyAsync();
             }
@@ -54,7 +53,7 @@ namespace Nebula.Services.Organizations.Data.Postgres
 
         public async IAsyncEnumerable<EmployeeRecord> GetAll(Guid organizationId)
         {
-            var employees = _context.Employees
+            var employees = _employees
                 .Where(e => e.OrganizationId == organizationId && e.IsActive)
                 .AsAsyncEnumerable();
 
@@ -68,7 +67,7 @@ namespace Nebula.Services.Organizations.Data.Postgres
         {
             try
             {
-                var entity = await _context.Employees
+                var entity = await _employees
                     .Where(e => e.OrganizationId == organizationId && e.Id == employeeId && e.IsActive)
                     .FirstOrDefaultAsync();
 
@@ -81,38 +80,46 @@ namespace Nebula.Services.Organizations.Data.Postgres
             }
         }
 
-        public async Task<bool> Update(EmployeeRecord employee)
+        public async Task<EmployeeRecord> GetByUserId(Guid organizationId, Guid userId)
         {
             try
             {
-                var existingEntity = await _context.Employees
-                    .Where(e => e.Id == employee.EmployeeId.ToGuid())
+                var entity = await _employees
+                    .Where(e => e.OrganizationId == organizationId && e.UserId == userId && e.IsActive)
                     .FirstOrDefaultAsync();
-
-                if (existingEntity == null) return false;
-
-                // Update fields from record
-                existingEntity.FirstName = employee.FirstName ?? string.Empty;
-                existingEntity.LastName = employee.LastName ?? string.Empty;
-                existingEntity.Email = employee.Email ?? string.Empty;
-                existingEntity.Phone = employee.Phone ?? string.Empty;
-                existingEntity.JobTitle = employee.JobTitle ?? string.Empty;
-                existingEntity.Department = employee.Department ?? string.Empty;
-                existingEntity.IsActive = employee.IsActive;
-                existingEntity.LastModifiedUtc = DateTime.UtcNow;
-                existingEntity.LastModifiedBy = employee.LastModifiedBy ?? string.Empty;
-
-                if (!string.IsNullOrEmpty(employee.ManagerId))
-                    existingEntity.ManagerId = employee.ManagerId.ToGuid();
-
-                var result = await _context.SaveChangesAsync();
-                return result > 0;
+                return entity?.ToRecord();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to update employee {EmployeeId}", employee.EmployeeId);
-                return false;
+                _logger.LogError(ex, "Failed to get employee by User ID {UserId} in organization {OrganizationId}", userId, organizationId);
+                return null;
             }
+        }
+
+        public async Task<bool> Update(EmployeeRecord employee)
+        {
+
+            var existingEntity = await _employees
+                .Where(e => e.Id == employee.EmployeeId.ToGuid())
+                .FirstOrDefaultAsync();
+
+            if (existingEntity == null) return false;
+
+            // Update fields from record
+            existingEntity.FirstName = employee.FirstName ?? existingEntity.FirstName;
+            existingEntity.LastName = employee.LastName ?? existingEntity.LastName;
+            existingEntity.Email = employee.Email ?? existingEntity.Email;
+            existingEntity.Phone = employee.Phone ?? existingEntity.Phone;
+            existingEntity.JobTitle = employee.JobTitle ?? existingEntity.JobTitle;
+            existingEntity.Department = employee.Department ?? existingEntity.Department;
+            existingEntity.IsActive = employee.IsActive;
+            existingEntity.LastModifiedUtc = DateTime.UtcNow;
+            existingEntity.LastModifiedBy = employee.LastModifiedBy;
+
+            if (!string.IsNullOrEmpty(employee.ManagerId))
+                existingEntity.ManagerId = employee.ManagerId.ToGuid();
+
+            return true;
         }
     }
 }

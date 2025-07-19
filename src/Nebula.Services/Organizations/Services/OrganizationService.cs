@@ -7,6 +7,7 @@ using Nebula.Services.Base.Extensions;
 using Nebula.Services.Fragments.Organizations;
 using Nebula.Services.Fragments.Organziations;
 using Nebula.Services.Organizations.Data;
+using Nebula.Services.Organizations.Data.Postgres;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,23 +23,19 @@ namespace Nebula.Services.Organizations.Services
         private readonly IOrganizationRepository _organizations;
         private readonly IEmployeeRepository _employees;
         private readonly IOrganizationInviteRepository _invites;
+        private readonly OrganizationsDbContextHelper _dbContextHelper;
 
-        public OrganizationService(ILogger<OrganizationService> logger, IOrganizationRepository organizations, IEmployeeRepository employees, IOrganizationInviteRepository invites)
+        public OrganizationService(ILogger<OrganizationService> logger, IOrganizationRepository organizations, IEmployeeRepository employees, IOrganizationInviteRepository invites, OrganizationsDbContextHelper dbContextHelper)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _organizations = organizations ?? throw new ArgumentNullException(nameof(organizations));
             _employees = employees;
             _invites = invites;
+            _dbContextHelper = dbContextHelper ?? throw new ArgumentNullException(nameof(dbContextHelper));
         }
 
         public override async Task<CreateOrganizationResponse> CreateOrganization(CreateOrganizationRequest request, ServerCallContext context)
         {
-            var newOrg = new OrganizationRecord
-            {
-                OrganizationId = Guid.NewGuid().ToString(),
-                OrganizationName = request.OrganizationName,
-            };
-
             var createdByUser = NebulaUserHelper.ParseUser(context.GetHttpContext());
             if (createdByUser == null)
             {
@@ -47,56 +44,86 @@ namespace Nebula.Services.Organizations.Services
                     Error = "User not authenticated"
                 };
             }
-            var createdById = createdByUser?.Id.ToString();
-            newOrg.OwnerId = createdById;
-            newOrg.CreatedBy = createdById;
-            newOrg.LastModifiedBy = createdById;
-
-            var now = Timestamp.FromDateTime(DateTime.UtcNow);
-            newOrg.CreatedUTC = now;
-            newOrg.LastModifiedUTC = now;
-
-            var ownerEmployeeId = Guid.NewGuid().ToString();
-            var ownerEmployee = new EmployeeRecord()
+            
+            using var transaction = await _dbContextHelper.BeginTransactionAsync();
+            try
             {
-                EmployeeId = ownerEmployeeId,
-                OrganizationId = newOrg.OrganizationId,
-                FirstName = createdByUser.FirstName,
-                LastName = createdByUser.LastName,
-                Email = "", // Could be extracted from user claims if needed
-                StartUTC = now,
-                IsActive = true,
-                UserId = createdById,
-                CreatedUTC = now,
-                CreatedBy = createdById,
-                LastModifiedUTC = now,
-                LastModifiedBy = createdById,
-            };
-
-            newOrg.EmployeeIds.Add(ownerEmployee.EmployeeId);
-
-            var orgSuccess = await _organizations.Create(newOrg);
-            var employeeSuccess = await _employees.Create(ownerEmployee);
-
-            if (!orgSuccess)
-                return new CreateOrganizationResponse
+                var createdById = createdByUser?.Id.ToString();
+                var now = Timestamp.FromDateTime(DateTime.UtcNow);
+                var newOrg = new OrganizationRecord
                 {
-                    Error = "Organization could not be created"
+                    OrganizationId = Guid.NewGuid().ToString(),
+                    OrganizationName = request.OrganizationName,
+                    OwnerId = createdById,
+                    CreatedBy = createdById,
+                    LastModifiedBy = createdById,
+                    CreatedUTC = now,
+                    LastModifiedUTC = now,
                 };
 
-            if (!employeeSuccess)
-                return new CreateOrganizationResponse
+                var ownerEmployeeId = Guid.NewGuid().ToString();
+                var ownerEmployee = new EmployeeRecord()
                 {
-                    Error = "Employee could not be created for the organization owner"
+                    EmployeeId = ownerEmployeeId,
+                    OrganizationId = newOrg.OrganizationId,
+                    FirstName = createdByUser.FirstName,
+                    LastName = createdByUser.LastName,
+                    Email = "", // Could be extracted from user claims if needed
+                    StartUTC = now,
+                    IsActive = true,
+                    UserId = createdById,
+                    CreatedUTC = now,
+                    CreatedBy = createdById,
+                    LastModifiedUTC = now,
+                    LastModifiedBy = createdById,
                 };
 
-            // TODO: Add Scoped Org Role to the user
+                newOrg.EmployeeIds.Add(ownerEmployee.EmployeeId);
 
-            return new CreateOrganizationResponse()
+                var orgSuccess = await _organizations.Create(newOrg);
+                var employeeSuccess = await _employees.Create(ownerEmployee);
+
+                if (!orgSuccess)
+                {
+                    await transaction.RollbackAsync();
+                    return new CreateOrganizationResponse
+                    {
+                        Error = "Organization could not be created"
+                    };
+                }
+
+                if (!employeeSuccess)
+                {
+                    await transaction.RollbackAsync();
+                    return new CreateOrganizationResponse
+                    {
+                        Error = "Owner employee record could not be created"
+                    };
+                }
+
+                // Save changes to the database within the transaction
+                await _dbContextHelper.SaveChangesAsync();
+                
+                // Commit the transaction
+                await transaction.CommitAsync();
+
+                // TODO: Add Scoped Org Role to the user
+
+                return new CreateOrganizationResponse()
+                {
+                    Record = newOrg,
+                    Error = "No Error"
+                };
+            }
+            catch (Exception ex)
             {
-                Record = newOrg,
-                Error = "No Error"
-            };
+                _logger.LogError(ex, "Error creating organization");
+                await transaction.RollbackAsync();
+                return new CreateOrganizationResponse
+                {
+                    Error = "An error occurred while creating the organization"
+                };
+            }
         }
 
         public override async Task<InviteUserResponse> InviteUser(InviteUserRequest request, ServerCallContext context)
@@ -138,6 +165,14 @@ namespace Nebula.Services.Organizations.Services
             if (!inviteCreated)
             {
                 res.Error = "Failed to create organization invite";
+                return res;
+            }
+
+            var inviteSaved = await _dbContextHelper.SaveChangesAsync();
+
+            if (inviteSaved == 0)
+            {
+                res.Error = "Failed to save organization invite";
                 return res;
             }
 
@@ -192,40 +227,54 @@ namespace Nebula.Services.Organizations.Services
                 return res;
             }
 
-            var newEmployee = new EmployeeRecord
+            using var transaction = await _dbContextHelper.BeginTransactionAsync();
+            try
             {
-                EmployeeId = Guid.NewGuid().ToString(),
-                OrganizationId = invite.OrganizationId,
-                UserId = user.Id.ToString(),
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                StartUTC = Timestamp.FromDateTime(DateTime.UtcNow),
-                IsActive = true,
-                CreatedUTC = Timestamp.FromDateTime(DateTime.UtcNow),
-                CreatedBy = user.Id.ToString(),
-                LastModifiedUTC = Timestamp.FromDateTime(DateTime.UtcNow),
-                LastModifiedBy = user.Id.ToString(),
-            };
+                var newEmployee = new EmployeeRecord
+                {
+                    EmployeeId = Guid.NewGuid().ToString(),
+                    OrganizationId = invite.OrganizationId,
+                    UserId = user.Id.ToString(),
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    StartUTC = Timestamp.FromDateTime(DateTime.UtcNow),
+                    IsActive = true,
+                    CreatedUTC = Timestamp.FromDateTime(DateTime.UtcNow),
+                    CreatedBy = user.Id.ToString(),
+                    LastModifiedUTC = Timestamp.FromDateTime(DateTime.UtcNow),
+                    LastModifiedBy = user.Id.ToString(),
+                };
 
-            var employeeCreated = await _employees.Create(newEmployee);
-            if (!employeeCreated)
-            {
-                res.Error = "Failed to create employee record";
+                var employeeCreated = await _employees.Create(newEmployee);
+                if (!employeeCreated)
+                {
+                    await transaction.RollbackAsync();
+                    res.Error = "Failed to create employee record";
+                    return res;
+                }
+
+                organization.EmployeeIds.Add(newEmployee.EmployeeId);
+                var orgUpdated = await _organizations.Update(organization);
+                if (!orgUpdated)
+                {
+                    await transaction.RollbackAsync();
+                    res.Error = "Failed to update organization with new employee";
+                    return res;
+                }
+
+                // TODO: Add Scoped Org Role to the user
+
+                await transaction.CommitAsync();
+                res.Error = "No Error";
                 return res;
             }
-
-            organization.EmployeeIds.Add(newEmployee.EmployeeId);
-            var orgUpdated = await _organizations.Update(organization);
-            if (!orgUpdated)
+            catch (Exception ex)
             {
-                res.Error = "Failed to update organization with new employee";
+                _logger.LogError(ex, "Error joining organization");
+                await transaction.RollbackAsync();
+                res.Error = "An error occurred while joining the organization";
                 return res;
             }
-
-            // TODO: Add Scoped Org Role to the user
-
-            res.Error = "No Error";
-            return res;
         }
 
         public override Task<LeaveOrganizationResponse> LeaveOrganization(LeaveOrganizationRequest request, ServerCallContext context)
@@ -289,6 +338,36 @@ namespace Nebula.Services.Organizations.Services
         public override Task<GetEmployeeByIdResponse> GetEmployeeById(GetEmployeeByIdRequest request, ServerCallContext context)
         {
             return base.GetEmployeeById(request, context);
+        }
+
+        public override async Task<GetOwnEmployeeResponse> GetOwnEmployee(GetOwnEmployeeRequest request, ServerCallContext context)
+        {
+            var res = new GetOwnEmployeeResponse();
+            var user = NebulaUserHelper.ParseUser(context.GetHttpContext());
+            if (user == null || !user.IsLoggedIn)
+            {
+                res.Error = "User not authenticated";
+                return res;
+            }
+
+            var orgId = request.OrganizationId.ToGuid();
+            if (orgId == Guid.Empty)
+            {
+                res.Error = "Invalid Organization ID";
+                return res;
+            }
+
+            var orgExists = await _organizations.Exists(orgId);
+            if (!orgExists)
+            {
+                res.Error = "Organization does not exist";
+                return res;
+            }
+
+            var employee = await _employees.GetByUserId(orgId, user.Id);
+
+            res.Error = "No Error";
+            return res;
         }
 
         public override async Task<GetEmployeesResponse> GetEmployees(GetEmployeesRequest request, ServerCallContext context)
